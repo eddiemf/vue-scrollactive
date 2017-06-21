@@ -8,11 +8,11 @@ This vue 2 component makes it simple to highlight a menu item with an 'active' c
  - Vue2
  - Uses pure JS!
 
-## Instalation
+## Installation
 Install via npm and use it as a vue plugin in your app.
 
 ```bash
-npm install vue-scrollactive
+npm install --save-dev vue-scrollactive
 ```
 ```js
 var Scrollactive = require('scrollactive');
