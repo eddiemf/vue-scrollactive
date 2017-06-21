@@ -1,0 +1,13 @@
+.nav.is-fixed {
+	position: fixed;
+	left: 0;
+	right: 0;
+
+	.is-active {
+		color: #00d1b2;
+	}
+}
+
+.section {
+	padding-top: 100px;
+}

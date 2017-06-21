@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Scrollactive!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.min.css">
+    <link rel="stylesheet" href="assets/main.css">
+</head>
+<body>
+    <div id="app">
+        <header id="site-header" class="nav is-fixed">
+            <div class="container">
+                <scrollactive :offset="52">
+                    <ul class="nav-center">
+                        <li><a href="#home" class="scrollactive-item nav-item">Home</a></li>
+                        <li><a href="#section-1" class="scrollactive-item nav-item">Section 1</a></li>
+                        <li><a href="#section-2" class="scrollactive-item nav-item">Section 2</a></li>
+                        <li><a href="#section-3" class="scrollactive-item nav-item">Section 3</a></li>
+                    </ul>
+                </scrollactive>
+            </div>
+        </header>
+
+        <main>
+            <section id="home" class="section hero is-primary is-fullheight">
+                <div class="container">
+                    <h1 class="heading title is-1">Home</h1>
+                </div>
+            </section>
+
+            <section id="section-1" class="section hero is-info is-fullheight">
+                <div class="container">
+                    <h1 class="heading title is-1">Section 1</h1>
+                </div>
+            </section>
+
+            <section id="section-2" class="section hero is-danger is-fullheight">
+                <div class="container">
+                    <h1 class="heading title is-1">Section 2</h1>
+                </div>
+            </section>
+
+            <section id="section-3" class="section hero is-success is-fullheight">
+                <div class="container">
+                    <h1 class="heading title is-1">Section 3</h1>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="assets/main.js"></script>
+</body>
+</html>
