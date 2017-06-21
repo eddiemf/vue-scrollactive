@@ -11,8 +11,8 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('src/index.js', 'dist/scrollactive.js')
-	.minify('dist/scrollactive.js')
+mix.js('src/index.js', 'dist/vue-scrollactive.js')
+	.minify('dist/vue-scrollactive.js')
 	.js('src/examples/main.js', 'examples/assets')
 	.sass('src/examples/main.scss', 'examples/assets');
 
