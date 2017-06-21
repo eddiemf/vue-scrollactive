@@ -15,7 +15,7 @@ Install via npm and use it as a vue plugin in your app.
 npm install --save-dev vue-scrollactive
 ```
 ```js
-var Scrollactive = require('scrollactive');
+var Scrollactive = require('vue-scrollactive');
 Vue.use(Scrollactive);
 ```
 
