@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Scrollactive from '../index.js';
+import Scrollactive from '../../dist/vue-scrollactive.js';
 
 Vue.use(Scrollactive);
 
