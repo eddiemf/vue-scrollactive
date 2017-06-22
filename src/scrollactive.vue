@@ -103,7 +103,7 @@
 		},
 
 		methods: {
-			init() {
+			onScroll() {
 				for (let scrollactiveItem of this.scrollactiveItems) {
 					let target = document.querySelector(scrollactiveItem.hash);
 
@@ -153,7 +153,7 @@
 				event.preventDefault();
 
 				if (!this.alwaysTrack) {
-					window.removeEventListener('scroll', this.init);
+					window.removeEventListener('scroll', this.onScroll);
 					window.cancelAnimationFrame(window.AFRequestID);
 
 					for (let scrollactiveItem of this.scrollactiveItems) {
@@ -197,8 +197,8 @@
 
 		mounted() {
 			this.setScrollactiveItems();
-			this.init();
-			window.addEventListener('scroll', this.init);
+			this.onScroll();
+			window.addEventListener('scroll', this.onScroll);
 
 			if (this.clickToScroll) {
 				for (let scrollactiveItem of this.scrollactiveItems) {

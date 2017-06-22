@@ -1,6 +1,5 @@
 {
-    "/examples/assets/main.js": "/examples/assets/main.js",
     "/dist/vue-scrollactive.js": "/dist/vue-scrollactive.js",
     "/examples/assets/main.css": "/examples/assets/main.css",
-    "/dist/vue-scrollactive.min.js": "/dist/vue-scrollactive.min.js"
+    "/examples/assets/main.js": "/examples/assets/main.js"
 }

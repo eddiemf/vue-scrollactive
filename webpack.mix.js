@@ -12,9 +12,18 @@ let mix = require('laravel-mix');
  */
 
 mix.js('src/index.js', 'dist/vue-scrollactive.js')
-	.minify('dist/vue-scrollactive.js')
 	.js('src/examples/main.js', 'examples/assets')
 	.sass('src/examples/main.scss', 'examples/assets');
+
+mix.webpackConfig({
+	externals: [
+		'vue'
+	],
+	output: {
+		library: 'VueScrollactive',
+		libraryTarget: 'umd'
+	}
+});
 
 // Full API
 // mix.js(src, output);
@@ -36,7 +45,6 @@ mix.js('src/index.js', 'dist/vue-scrollactive.js')
 // mix.setPublicPath('path/to/public');
 // mix.setResourceRoot('prefix/for/resource/locators');
 // mix.autoload({}); <-- Will be passed to Webpack's ProvidePlugin.
-// mix.webpackConfig({}); <-- Override webpack.config.js, without editing the file directly.
 // mix.then(function () {}) <-- Will be triggered each time Webpack finishes building.
 // mix.options({
 //   extractVueStyles: false, // Extract .vue component styling to file, rather than inline.

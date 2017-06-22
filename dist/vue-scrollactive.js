@@ -1,4 +1,14 @@
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["VueScrollactive"] = factory();
+	else
+		root["VueScrollactive"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 /******/
@@ -60,41 +70,51 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
 /******/ ([
 /* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(1);
+module.exports = __webpack_require__(7);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scrollactive_vue__);
 
 
-var install = function install(Vue) {
-	if (install.installed) return;
+var Plugin = {};
+
+Plugin.install = function (Vue) {
+	if (Plugin.install.installed) return;
 
 	Vue.component("scrollactive", __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue___default.a);
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
-	install(window.Vue);
+	Plugin.install(window.Vue);
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (install);
+/* harmony default export */ __webpack_exports__["default"] = (Plugin);
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(2)(
+var Component = __webpack_require__(3)(
   /* script */
-  __webpack_require__(3),
+  __webpack_require__(4),
   /* template */
-  __webpack_require__(5),
+  __webpack_require__(6),
   /* styles */
   null,
   /* scopeId */
@@ -126,7 +146,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -223,7 +243,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -317,7 +337,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			scrollactiveItems: null,
-			bezierEasing: __webpack_require__(4)
+			bezierEasing: __webpack_require__(5)
 		};
 	},
 
@@ -334,7 +354,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	},
 
 	methods: {
-		init: function init() {
+		onScroll: function onScroll() {
 			var _iteratorNormalCompletion = true;
 			var _didIteratorError = false;
 			var _iteratorError = undefined;
@@ -425,7 +445,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 			event.preventDefault();
 
 			if (!this.alwaysTrack) {
-				window.removeEventListener('scroll', this.init);
+				window.removeEventListener('scroll', this.onScroll);
 				window.cancelAnimationFrame(window.AFRequestID);
 
 				var _iteratorNormalCompletion3 = true;
@@ -490,8 +510,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 	mounted: function mounted() {
 		this.setScrollactiveItems();
-		this.init();
-		window.addEventListener('scroll', this.init);
+		this.onScroll();
+		window.addEventListener('scroll', this.onScroll);
 
 		if (this.clickToScroll) {
 			var _iteratorNormalCompletion4 = true;
@@ -523,7 +543,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports) {
 
 /**
@@ -633,7 +653,7 @@ module.exports = function bezier (mX1, mY1, mX2, mY2) {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -650,14 +670,6 @@ if (false) {
 }
 
 /***/ }),
-/* 6 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(0);
-module.exports = __webpack_require__(7);
-
-
-/***/ }),
 /* 7 */
 /***/ (function(module, exports) {
 
@@ -665,3 +677,4 @@ module.exports = __webpack_require__(7);
 
 /***/ })
 /******/ ]);
+});
