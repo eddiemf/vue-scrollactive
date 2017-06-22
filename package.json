@@ -5,14 +5,13 @@
   "description": "Lightweight and simple to use vue component that highlights menu items as you scroll the page, also scrolling to target section when clicked.",
   "main": "dist/vue-scrollactive.js",
   "scripts": {
-    "dev": "node node_modules/webpack/bin/webpack.js --progress --hide-modules --config=$npm_package_config_webpack",
-    "watch": "npm run dev -- -w",
-    "watch-poll": "npm run dev -- -w --watch-poll",
-    "hot": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=$npm_package_config_webpack",
-    "production": "npm run dev -- -p"
-  },
-  "config": {
-    "webpack": "node_modules/laravel-mix/setup/webpack.config.js"
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "repository": {
     "type": "git",
