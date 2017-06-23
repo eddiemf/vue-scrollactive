@@ -722,7 +722,7 @@ exports.default = {
 		isWindowInsideTarget: function isWindowInsideTarget(target) {
 			var distanceFromTop = window.scrollY;
 			var targetDistanceFromTop = target.offsetTop;
-			var targetHeight = target.scrollHeight;
+			var targetHeight = target.offsetHeight;
 
 			if (targetDistanceFromTop - this.offset <= distanceFromTop && targetDistanceFromTop + targetHeight - this.offset > distanceFromTop) {
 				return true;

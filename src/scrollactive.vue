@@ -124,7 +124,7 @@
 			isWindowInsideTarget(target) {
 				let distanceFromTop = window.scrollY;
 				let targetDistanceFromTop = target.offsetTop;
-				let targetHeight = target.scrollHeight;
+				let targetHeight = target.offsetHeight;
 
 		        if (targetDistanceFromTop - this.offset <= distanceFromTop && targetDistanceFromTop + targetHeight - this.offset > distanceFromTop) {
 		        	return true;
