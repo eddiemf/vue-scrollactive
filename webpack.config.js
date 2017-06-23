@@ -5,9 +5,8 @@ module.exports = {
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, './dist'),
-        publicPath: '/dist/',
+        publicPath: 'dist/',
         filename: 'vue-scrollactive.js',
-        library: ['vue-scrollactive'],
         libraryTarget: 'umd'
     },
     module: {
