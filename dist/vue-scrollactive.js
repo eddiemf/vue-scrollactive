@@ -4,9 +4,9 @@
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["VueScrollactive"] = factory();
+		exports["vue-scrollactive"] = factory();
 	else
-		root["VueScrollactive"] = factory();
+		root["vue-scrollactive"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -86,24 +86,31 @@ module.exports = __webpack_require__(7);
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scrollactive_vue__);
 
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _scrollactive = __webpack_require__(2);
+
+var _scrollactive2 = _interopRequireDefault(_scrollactive);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Plugin = {};
 
 Plugin.install = function (Vue) {
 	if (Plugin.install.installed) return;
 
-	Vue.component("scrollactive", __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue___default.a);
+	Vue.component("scrollactive", _scrollactive2.default);
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
 	Plugin.install(window.Vue);
 }
 
-/* harmony default export */ __webpack_exports__["default"] = (Plugin);
+exports.default = Plugin;
 
 /***/ }),
 /* 2 */
