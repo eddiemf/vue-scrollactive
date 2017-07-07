@@ -105,7 +105,7 @@
 		methods: {
 			onScroll() {
 				for (let scrollactiveItem of this.scrollactiveItems) {
-					let target = document.querySelector(scrollactiveItem.hash);
+					let target = document.getElementById(scrollactiveItem.hash.substr(1));
 
 					if (this.isWindowInsideTarget(target)) {
 						scrollactiveItem.classList.add(this.activeClass);
@@ -141,7 +141,7 @@
 				}
 
 				for (let scrollactiveItem of scrollactiveItems) {
-					if (!document.querySelector(scrollactiveItem.hash)) {
+					if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
 						throw new Error("Element '" + scrollactiveItem.hash + "' was not found. Make sure it is set in the DOM.");
 					}
 				}
@@ -164,7 +164,7 @@
 				}
 
 				let vm = this;
-				let targetDistanceFromTop = document.querySelector(event.target.hash).offsetTop;
+				let targetDistanceFromTop = document.getElementById(event.target.hash.substr(1)).offsetTop;
 				let startingY = window.pageYOffset;
 				let difference = targetDistanceFromTop - startingY;
 				let start = null;
