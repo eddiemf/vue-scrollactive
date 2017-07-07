@@ -205,6 +205,11 @@
 					scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
 				}
 			}
+		},
+
+		beforeDestroy () {
+			window.removeEventListener('scroll', this.onScroll);
+			window.cancelAnimationFrame(window.AFRequestID);
 		}
 	}
 </script>
