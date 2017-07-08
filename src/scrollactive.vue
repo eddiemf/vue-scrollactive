@@ -87,7 +87,7 @@
 		data() {
 			return {
 				scrollactiveItems: null,
-				bezierEasing: require('bezier-easing')
+				bezierEasing: require('bezier-easing'),
 			}
 		},
 
@@ -104,33 +104,19 @@
 
 		methods: {
 			onScroll() {
+				let distanceFromTop = window.scrollY;
+				let currentItem;
+
 				for (let scrollactiveItem of this.scrollactiveItems) {
+					scrollactiveItem.classList.remove(this.activeClass);
 					let target = document.getElementById(scrollactiveItem.hash.substr(1));
 
-					if (this.isWindowInsideTarget(target)) {
-						scrollactiveItem.classList.add(this.activeClass);
-					} else {
-						scrollactiveItem.classList.remove(this.activeClass);
+					if (distanceFromTop >= target.offsetTop - this.offset) {
+						currentItem = scrollactiveItem;
 					}
 				}
-			},
 
-			/**
-			 * Verifies if the window is inside the target section.
-			 *
-			 * @param target [Section element]
-			 * @return {Boolean}
-			 */
-			isWindowInsideTarget(target) {
-				let distanceFromTop = window.scrollY;
-				let targetDistanceFromTop = target.offsetTop;
-				let targetHeight = target.offsetHeight;
-
-		        if (targetDistanceFromTop - this.offset <= distanceFromTop && targetDistanceFromTop + targetHeight - this.offset > distanceFromTop) {
-		        	return true;
-		        }
-
-				return false;
+				if (currentItem) currentItem.classList.add(this.activeClass);
 			},
 
 			setScrollactiveItems() {

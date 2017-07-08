@@ -660,6 +660,9 @@ exports.default = {
 
 	methods: {
 		onScroll: function onScroll() {
+			var distanceFromTop = window.scrollY;
+			var currentItem = void 0;
+
 			var _iteratorNormalCompletion = true;
 			var _didIteratorError = false;
 			var _iteratorError = undefined;
@@ -668,12 +671,11 @@ exports.default = {
 				for (var _iterator = (0, _getIterator3.default)(this.scrollactiveItems), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var scrollactiveItem = _step.value;
 
+					scrollactiveItem.classList.remove(this.activeClass);
 					var target = document.getElementById(scrollactiveItem.hash.substr(1));
 
-					if (this.isWindowInsideTarget(target)) {
-						scrollactiveItem.classList.add(this.activeClass);
-					} else {
-						scrollactiveItem.classList.remove(this.activeClass);
+					if (distanceFromTop >= target.offsetTop - this.offset) {
+						currentItem = scrollactiveItem;
 					}
 				}
 			} catch (err) {
@@ -690,25 +692,8 @@ exports.default = {
 					}
 				}
 			}
-		},
 
-
-		/**
-   * Verifies if the window is inside the target section.
-   *
-   * @param target [Section element]
-   * @return {Boolean}
-   */
-		isWindowInsideTarget: function isWindowInsideTarget(target) {
-			var distanceFromTop = window.scrollY;
-			var targetDistanceFromTop = target.offsetTop;
-			var targetHeight = target.offsetHeight;
-
-			if (targetDistanceFromTop - this.offset <= distanceFromTop && targetDistanceFromTop + targetHeight - this.offset > distanceFromTop) {
-				return true;
-			}
-
-			return false;
+			if (currentItem) currentItem.classList.add(this.activeClass);
 		},
 		setScrollactiveItems: function setScrollactiveItems() {
 			var scrollactiveItems = document.querySelectorAll('.scrollactive-item');
