@@ -805,7 +805,7 @@ exports.default = {
 				if (progress < vm.duration) {
 					window.AFRequestID = window.requestAnimationFrame(step);
 				} else {
-					window.addEventListener('scroll', vm.init);
+					window.addEventListener('scroll', vm.onScroll);
 				}
 			}
 

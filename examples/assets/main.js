@@ -782,7 +782,7 @@ exports.default = {
 				for (var _iterator = (0, _getIterator3.default)(this.scrollactiveItems), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var scrollactiveItem = _step.value;
 
-					var target = document.querySelector(scrollactiveItem.hash);
+					var target = document.getElementById(scrollactiveItem.hash.substr(1));
 
 					if (this.isWindowInsideTarget(target)) {
 						scrollactiveItem.classList.add(this.activeClass);
@@ -816,7 +816,7 @@ exports.default = {
 		isWindowInsideTarget: function isWindowInsideTarget(target) {
 			var distanceFromTop = window.scrollY;
 			var targetDistanceFromTop = target.offsetTop;
-			var targetHeight = target.scrollHeight;
+			var targetHeight = target.offsetHeight;
 
 			if (targetDistanceFromTop - this.offset <= distanceFromTop && targetDistanceFromTop + targetHeight - this.offset > distanceFromTop) {
 				return true;
@@ -839,7 +839,7 @@ exports.default = {
 				for (var _iterator2 = (0, _getIterator3.default)(scrollactiveItems), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 					var scrollactiveItem = _step2.value;
 
-					if (!document.querySelector(scrollactiveItem.hash)) {
+					if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
 						throw new Error("Element '" + scrollactiveItem.hash + "' was not found. Make sure it is set in the DOM.");
 					}
 				}
@@ -896,7 +896,7 @@ exports.default = {
 			}
 
 			var vm = this;
-			var targetDistanceFromTop = document.querySelector(event.target.hash).offsetTop;
+			var targetDistanceFromTop = document.getElementById(event.target.hash.substr(1)).offsetTop;
 			var startingY = window.pageYOffset;
 			var difference = targetDistanceFromTop - startingY;
 			var start = null;
@@ -919,7 +919,7 @@ exports.default = {
 				if (progress < vm.duration) {
 					window.AFRequestID = window.requestAnimationFrame(step);
 				} else {
-					window.addEventListener('scroll', vm.init);
+					window.addEventListener('scroll', vm.onScroll);
 				}
 			}
 
@@ -958,6 +958,10 @@ exports.default = {
 				}
 			}
 		}
+	},
+	beforeDestroy: function beforeDestroy() {
+		window.removeEventListener('scroll', this.onScroll);
+		window.cancelAnimationFrame(window.AFRequestID);
 	}
 };
 
