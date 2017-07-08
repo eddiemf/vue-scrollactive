@@ -3,10 +3,10 @@
 		module.exports = factory();
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
-	else {
-		var a = factory();
-		for(var i in a) (typeof exports === 'object' ? exports : root)[i] = a[i];
-	}
+	else if(typeof exports === 'object')
+		exports["vue-scrollactive"] = factory();
+	else
+		root["vue-scrollactive"] = factory();
 })(this, function() {
 return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
@@ -67,7 +67,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
 /******/
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "dist/";
+/******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(__webpack_require__.s = 23);
@@ -423,7 +423,6 @@ exports.default = Plugin;
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
 var Component = __webpack_require__(25)(
   /* script */
   __webpack_require__(26),
@@ -436,25 +435,6 @@ var Component = __webpack_require__(25)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/mauricio/web/vue-scrollactive/src/scrollactive.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] scrollactive.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-75a6c496", Component.options)
-  } else {
-    hotAPI.reload("data-v-75a6c496", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 module.exports = Component.exports
 
@@ -688,7 +668,7 @@ exports.default = {
 				for (var _iterator = (0, _getIterator3.default)(this.scrollactiveItems), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
 					var scrollactiveItem = _step.value;
 
-					var target = document.querySelector(scrollactiveItem.hash);
+					var target = document.getElementById(scrollactiveItem.hash.substr(1));
 
 					if (this.isWindowInsideTarget(target)) {
 						scrollactiveItem.classList.add(this.activeClass);
@@ -745,7 +725,7 @@ exports.default = {
 				for (var _iterator2 = (0, _getIterator3.default)(scrollactiveItems), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
 					var scrollactiveItem = _step2.value;
 
-					if (!document.querySelector(scrollactiveItem.hash)) {
+					if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
 						throw new Error("Element '" + scrollactiveItem.hash + "' was not found. Make sure it is set in the DOM.");
 					}
 				}
@@ -802,7 +782,7 @@ exports.default = {
 			}
 
 			var vm = this;
-			var targetDistanceFromTop = document.querySelector(event.target.hash).offsetTop;
+			var targetDistanceFromTop = document.getElementById(event.target.hash.substr(1)).offsetTop;
 			var startingY = window.pageYOffset;
 			var difference = targetDistanceFromTop - startingY;
 			var start = null;
@@ -864,6 +844,10 @@ exports.default = {
 				}
 			}
 		}
+	},
+	beforeDestroy: function beforeDestroy() {
+		window.removeEventListener('scroll', this.onScroll);
+		window.cancelAnimationFrame(window.AFRequestID);
 	}
 };
 
@@ -1511,20 +1495,13 @@ module.exports = function bezier (mX1, mY1, mX2, mY2) {
 
 /***/ }),
 /* 58 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('nav', {
     staticClass: "scrollactive-nav"
   }, [_vm._t("default")], 2)
 },staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-75a6c496", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
