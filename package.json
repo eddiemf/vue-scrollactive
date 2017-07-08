@@ -1,6 +1,6 @@
 {
   "name": "vue-scrollactive",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "title": "Vue Scrollactive",
   "description": "Lightweight and simple to use vue component that highlights menu items as you scroll the page, also scrolling to target section when clicked.",
   "main": "dist/vue-scrollactive.js",
