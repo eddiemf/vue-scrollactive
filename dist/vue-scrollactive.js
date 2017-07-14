@@ -659,6 +659,10 @@ exports.default = {
 	},
 
 	methods: {
+		/**
+   * Will be called when scrolling event is triggered to handle
+   * the addition of the active class in the current section item.
+   */
 		onScroll: function onScroll() {
 			var distanceFromTop = window.scrollY;
 			var currentItem = void 0;
@@ -695,6 +699,12 @@ exports.default = {
 
 			if (currentItem) currentItem.classList.add(this.activeClass);
 		},
+
+
+		/**
+   * Sets the initial list of menu items, validating if there's none
+   * or if its hash corresponds to a valid element ID.
+   */
 		setScrollactiveItems: function setScrollactiveItems() {
 			var scrollactiveItems = document.querySelectorAll('.scrollactive-item');
 
@@ -731,6 +741,11 @@ exports.default = {
 
 			this.scrollactiveItems = scrollactiveItems;
 		},
+
+
+		/**
+   * Handles the scrolling when clicking a menu item.
+   */
 		scrollToTargetElement: function scrollToTargetElement(event) {
 			event.preventDefault();
 

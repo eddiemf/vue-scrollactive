@@ -103,6 +103,10 @@
 		},
 
 		methods: {
+			/**
+			 * Will be called when scrolling event is triggered to handle
+			 * the addition of the active class in the current section item.
+			 */
 			onScroll() {
 				let distanceFromTop = window.scrollY;
 				let currentItem;
@@ -119,6 +123,10 @@
 				if (currentItem) currentItem.classList.add(this.activeClass);
 			},
 
+			/**
+			 * Sets the initial list of menu items, validating if there's none
+			 * or if its hash corresponds to a valid element ID.
+			 */
 			setScrollactiveItems() {
 				let scrollactiveItems = document.querySelectorAll('.scrollactive-item');
 
@@ -135,6 +143,9 @@
 				this.scrollactiveItems = scrollactiveItems;
 			},
 
+			/**
+			 * Handles the scrolling when clicking a menu item.
+			 */
 			scrollToTargetElement(event) {
 				event.preventDefault();
 
@@ -193,7 +204,7 @@
 			}
 		},
 
-		beforeDestroy () {
+		beforeDestroy() {
 			window.removeEventListener('scroll', this.onScroll);
 			window.cancelAnimationFrame(window.AFRequestID);
 		}
