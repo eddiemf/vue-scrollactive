@@ -88,6 +88,7 @@
 			return {
 				scrollactiveItems: null,
 				bezierEasing: require('bezier-easing'),
+				lastActiveItem: null
 			}
 		},
 
@@ -105,7 +106,8 @@
 		methods: {
 			/**
 			 * Will be called when scrolling event is triggered to handle
-			 * the addition of the active class in the current section item.
+			 * the addition of the active class in the current section item
+			 * and fire the change event.
 			 */
 			onScroll() {
 				let distanceFromTop = window.scrollY;
@@ -118,6 +120,12 @@
 					if (distanceFromTop >= target.offsetTop - this.offset) {
 						currentItem = scrollactiveItem;
 					}
+				}
+
+				if (currentItem != this.lastActiveItem) {
+					// Makes sure to not fire when it's mounted
+					if (this.lastActiveItem) this.$emit('itemchanged', event, currentItem, this.lastActiveItem);
+					this.lastActiveItem = currentItem;
 				}
 
 				if (currentItem) currentItem.classList.add(this.activeClass);

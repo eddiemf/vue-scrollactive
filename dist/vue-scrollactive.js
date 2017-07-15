@@ -642,7 +642,8 @@ exports.default = {
 	data: function data() {
 		return {
 			scrollactiveItems: null,
-			bezierEasing: __webpack_require__(57)
+			bezierEasing: __webpack_require__(57),
+			lastActiveItem: null
 		};
 	},
 
@@ -661,7 +662,8 @@ exports.default = {
 	methods: {
 		/**
    * Will be called when scrolling event is triggered to handle
-   * the addition of the active class in the current section item.
+   * the addition of the active class in the current section item
+   * and fire the change event.
    */
 		onScroll: function onScroll() {
 			var distanceFromTop = window.scrollY;
@@ -695,6 +697,12 @@ exports.default = {
 						throw _iteratorError;
 					}
 				}
+			}
+
+			if (currentItem != this.lastActiveItem) {
+				// Makes sure to not fire when it's mounted
+				if (this.lastActiveItem) this.$emit('itemchanged', event, currentItem, this.lastActiveItem);
+				this.lastActiveItem = currentItem;
 			}
 
 			if (currentItem) currentItem.classList.add(this.activeClass);

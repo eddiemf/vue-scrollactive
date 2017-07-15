@@ -517,7 +517,6 @@ exports.default = Plugin;
 /* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
 var Component = __webpack_require__(25)(
   /* script */
   __webpack_require__(26),
@@ -530,25 +529,6 @@ var Component = __webpack_require__(25)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/mauricio/web/vue-scrollactive/src/scrollactive.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] scrollactive.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-75a6c496", Component.options)
-  } else {
-    hotAPI.reload("data-v-75a6c496", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 module.exports = Component.exports
 
@@ -756,7 +736,8 @@ exports.default = {
 	data: function data() {
 		return {
 			scrollactiveItems: null,
-			bezierEasing: __webpack_require__(57)
+			bezierEasing: __webpack_require__(57),
+			lastActiveItem: null
 		};
 	},
 
@@ -773,6 +754,11 @@ exports.default = {
 	},
 
 	methods: {
+		/**
+   * Will be called when scrolling event is triggered to handle
+   * the addition of the active class in the current section item
+   * and fire the change event.
+   */
 		onScroll: function onScroll() {
 			var distanceFromTop = window.scrollY;
 			var currentItem = void 0;
@@ -807,8 +793,20 @@ exports.default = {
 				}
 			}
 
+			if (currentItem != this.lastActiveItem) {
+				// Makes sure to not fire when it's mounted
+				if (this.lastActiveItem) this.$emit('itemchanged', event, currentItem, this.lastActiveItem);
+				this.lastActiveItem = currentItem;
+			}
+
 			if (currentItem) currentItem.classList.add(this.activeClass);
 		},
+
+
+		/**
+   * Sets the initial list of menu items, validating if there's none
+   * or if its hash corresponds to a valid element ID.
+   */
 		setScrollactiveItems: function setScrollactiveItems() {
 			var scrollactiveItems = document.querySelectorAll('.scrollactive-item');
 
@@ -845,6 +843,11 @@ exports.default = {
 
 			this.scrollactiveItems = scrollactiveItems;
 		},
+
+
+		/**
+   * Handles the scrolling when clicking a menu item.
+   */
 		scrollToTargetElement: function scrollToTargetElement(event) {
 			event.preventDefault();
 
@@ -1594,20 +1597,13 @@ module.exports = function bezier (mX1, mY1, mX2, mY2) {
 
 /***/ }),
 /* 58 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('nav', {
     staticClass: "scrollactive-nav"
   }, [_vm._t("default")], 2)
 },staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-75a6c496", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);
