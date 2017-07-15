@@ -33,7 +33,7 @@ You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and
 You can follow whatever structure you wish, just make sure to set the `.scrollactive-item` class in the items you want to highlight and set its `href` with a valid ID that you would like to track while scrolling.
 
 ## Events
-Scrollactive will fire an `itemchanged` event when an active menu item is changed to another, you can catch that event doing as the example below:
+Scrollactive will emmit an `itemchanged(event, currentItem, lastActiveItem)` event when an active menu item is changed to another, you can catch that event doing as the example below:
 
 ```html
 <scrollactive class="my-nav" v-on:itemchanged="yourFunction()">
