@@ -1,5 +1,4 @@
 # Highlight your menu items as you scroll
-
 This vue 2 component makes it simple to highlight a menu item with an 'active' class as you scroll.
 
  - Highlights menu items as you scroll
@@ -20,7 +19,7 @@ Vue.use(Scrollactive);
 ```
 
 ## Usage
-You should wrap your menu in a `<scrollactive>` (which will be your nav) and add a .scrollactive-item class in your `<a>` tags as I show in the example below:
+You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and add a `.scrollactive-item` class in your `<a>` tags as I show in the example below:
 
 ```html
 <scrollactive class="my-nav">
@@ -31,10 +30,21 @@ You should wrap your menu in a `<scrollactive>` (which will be your nav) and add
 </scrollactive>
 ```
 
-You can follow whatever structure you wish, just make sure to set the .scrollactive-item class in the items you want to highlight and set its `href` with a valid ID that you would like to scroll over.
+You can follow whatever structure you wish, just make sure to set the `.scrollactive-item` class in the items you want to highlight and set its `href` with a valid ID that you would like to track while scrolling.
+
+## Events
+Scrollactive will fire an `itemchanged` event when an active menu item is changed to another, you can catch that event doing as the example below:
+
+```html
+<scrollactive class="my-nav" v-on:itemchanged="yourFunction()">
+    <a href="#home" class="scrollactive-item">Home</a>
+    <a href="#about-us" class="scrollactive-item">About Us</a>
+    <a href="#portfolio" class="scrollactive-item">Portfolio</a>
+    <a href="#contact" class="scrollactive-item">Contact</a>
+</scrollactive>
+```
 
 ## Props configuration
-
 All options should be passed as a prop in the `<scrollactive>` component as you can see in the example below:
 
 ``` html
