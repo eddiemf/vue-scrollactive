@@ -8,6 +8,7 @@ This vue 2 component makes it simple to highlight a menu item with an 'active' c
  - Uses pure JS!
 
 Check the <a href="https://eddiemf.github.io/vue-scrollactive/examples/example-1.html">demo</a>!
+
 Other <a href="https://eddiemf.github.io/vue-scrollactive/examples/example-2.html">demo</a> with some custom configuration.
 
 ## Installation
