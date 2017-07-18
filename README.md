@@ -24,7 +24,7 @@ Vue.use(Scrollactive);
 You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and add a `.scrollactive-item` class in your `<a>` tags as I show in the example below:
 
 ```html
-<scrollactive class="my-nav">
+<scrollactive ref="scrollactive" class="my-nav">
     <a href="#home" class="scrollactive-item">Home</a>
     <a href="#about-us" class="scrollactive-item">About Us</a>
     <a href="#portfolio" class="scrollactive-item">Portfolio</a>
@@ -38,7 +38,7 @@ You can follow whatever structure you wish, just make sure to set the `.scrollac
 Scrollactive will emmit an `itemchanged(event, currentItem, lastActiveItem)` event when an active menu item is changed to another, you can catch that event doing as the example below:
 
 ```html
-<scrollactive class="my-nav" v-on:itemchanged="yourFunction()">
+<scrollactive ref="scrollactive" class="my-nav" v-on:itemchanged="yourFunction()">
     <a href="#home" class="scrollactive-item">Home</a>
     <a href="#about-us" class="scrollactive-item">About Us</a>
     <a href="#portfolio" class="scrollactive-item">Portfolio</a>
@@ -46,9 +46,21 @@ Scrollactive will emmit an `itemchanged(event, currentItem, lastActiveItem)` eve
 </scrollactive>
 ```
 
-## Props configuration
-All options should be passed as a prop in the `<scrollactive>` component as you can see in the example below:
+## Dynamic menu items
+In order for the component to update when you add a new menu item, you must call the `setScrollactiveItems()` function. You can do that as I do in the example below:
+``` javascript
+methods: {
+    dynamicItemsFunction() {
+        // Add your items
+        this.$refs.scrollactive.setScrollactiveItems();
+    }
+}
+```
 
+Make sure to set the `ref=scrollactive` property when you call the component in order to access the function as I do, or feel free to do it in any other way you would like, you just need to call the `setScrollactiveItems()` function.
+
+## Configuration
+All options should be passed as a prop in the `<scrollactive>` component as you can see in the example below:
 ``` html
 <scrollactive
 	active-class="active"
@@ -58,6 +70,7 @@ All options should be passed as a prop in the `<scrollactive>` component as you 
 </scrollactive>
 ```
 
+### Props
 ``` javascript
 /**
  * Class that will be applied in the menu item.
