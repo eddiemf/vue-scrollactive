@@ -149,6 +149,16 @@
 				}
 
 				this.scrollactiveItems = scrollactiveItems;
+
+				if (this.clickToScroll) {
+					for (let scrollactiveItem of scrollactiveItems) {
+						scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
+					}
+				} else {
+					for (let scrollactiveItem of scrollactiveItems) {
+						scrollactiveItem.removeEventListener('click', this.scrollToTargetElement);
+					}
+				}
 			},
 
 			/**
@@ -204,12 +214,10 @@
 			this.setScrollactiveItems();
 			this.onScroll();
 			window.addEventListener('scroll', this.onScroll);
+		},
 
-			if (this.clickToScroll) {
-				for (let scrollactiveItem of this.scrollactiveItems) {
-					scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
-				}
-			}
+		updated() {
+			this.setScrollactiveItems();
 		},
 
 		beforeDestroy() {

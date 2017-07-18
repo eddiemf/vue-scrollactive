@@ -726,10 +726,10 @@ exports.default = {
 
 			try {
 				for (var _iterator2 = (0, _getIterator3.default)(scrollactiveItems), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-					var scrollactiveItem = _step2.value;
+					var _scrollactiveItem2 = _step2.value;
 
-					if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
-						throw new Error("Element '" + scrollactiveItem.hash + "' was not found. Make sure it is set in the DOM.");
+					if (!document.getElementById(_scrollactiveItem2.hash.substr(1))) {
+						throw new Error("Element '" + _scrollactiveItem2.hash + "' was not found. Make sure it is set in the DOM.");
 					}
 				}
 			} catch (err) {
@@ -748,6 +748,58 @@ exports.default = {
 			}
 
 			this.scrollactiveItems = scrollactiveItems;
+
+			if (this.clickToScroll) {
+				var _iteratorNormalCompletion3 = true;
+				var _didIteratorError3 = false;
+				var _iteratorError3 = undefined;
+
+				try {
+					for (var _iterator3 = (0, _getIterator3.default)(scrollactiveItems), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+						var scrollactiveItem = _step3.value;
+
+						scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
+					}
+				} catch (err) {
+					_didIteratorError3 = true;
+					_iteratorError3 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion3 && _iterator3.return) {
+							_iterator3.return();
+						}
+					} finally {
+						if (_didIteratorError3) {
+							throw _iteratorError3;
+						}
+					}
+				}
+			} else {
+				var _iteratorNormalCompletion4 = true;
+				var _didIteratorError4 = false;
+				var _iteratorError4 = undefined;
+
+				try {
+					for (var _iterator4 = (0, _getIterator3.default)(scrollactiveItems), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+						var _scrollactiveItem = _step4.value;
+
+						_scrollactiveItem.removeEventListener('click', this.scrollToTargetElement);
+					}
+				} catch (err) {
+					_didIteratorError4 = true;
+					_iteratorError4 = err;
+				} finally {
+					try {
+						if (!_iteratorNormalCompletion4 && _iterator4.return) {
+							_iterator4.return();
+						}
+					} finally {
+						if (_didIteratorError4) {
+							throw _iteratorError4;
+						}
+					}
+				}
+			}
 		},
 
 
@@ -761,27 +813,27 @@ exports.default = {
 				window.removeEventListener('scroll', this.onScroll);
 				window.cancelAnimationFrame(window.AFRequestID);
 
-				var _iteratorNormalCompletion3 = true;
-				var _didIteratorError3 = false;
-				var _iteratorError3 = undefined;
+				var _iteratorNormalCompletion5 = true;
+				var _didIteratorError5 = false;
+				var _iteratorError5 = undefined;
 
 				try {
-					for (var _iterator3 = (0, _getIterator3.default)(this.scrollactiveItems), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-						var scrollactiveItem = _step3.value;
+					for (var _iterator5 = (0, _getIterator3.default)(this.scrollactiveItems), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+						var scrollactiveItem = _step5.value;
 
 						scrollactiveItem.classList.remove(this.activeClass);
 					}
 				} catch (err) {
-					_didIteratorError3 = true;
-					_iteratorError3 = err;
+					_didIteratorError5 = true;
+					_iteratorError5 = err;
 				} finally {
 					try {
-						if (!_iteratorNormalCompletion3 && _iterator3.return) {
-							_iterator3.return();
+						if (!_iteratorNormalCompletion5 && _iterator5.return) {
+							_iterator5.return();
 						}
 					} finally {
-						if (_didIteratorError3) {
-							throw _iteratorError3;
+						if (_didIteratorError5) {
+							throw _iteratorError5;
 						}
 					}
 				}
@@ -825,33 +877,9 @@ exports.default = {
 		this.setScrollactiveItems();
 		this.onScroll();
 		window.addEventListener('scroll', this.onScroll);
-
-		if (this.clickToScroll) {
-			var _iteratorNormalCompletion4 = true;
-			var _didIteratorError4 = false;
-			var _iteratorError4 = undefined;
-
-			try {
-				for (var _iterator4 = (0, _getIterator3.default)(this.scrollactiveItems), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-					var scrollactiveItem = _step4.value;
-
-					scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
-				}
-			} catch (err) {
-				_didIteratorError4 = true;
-				_iteratorError4 = err;
-			} finally {
-				try {
-					if (!_iteratorNormalCompletion4 && _iterator4.return) {
-						_iterator4.return();
-					}
-				} finally {
-					if (_didIteratorError4) {
-						throw _iteratorError4;
-					}
-				}
-			}
-		}
+	},
+	updated: function updated() {
+		this.setScrollactiveItems();
 	},
 	beforeDestroy: function beforeDestroy() {
 		window.removeEventListener('scroll', this.onScroll);
