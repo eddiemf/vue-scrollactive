@@ -10,39 +10,51 @@
     <div id="app">
         <header id="site-header" class="nav is-fixed">
             <div class="container">
-                <scrollactive :offset="52">
+                <scrollactive ref="scrollactive" :offset="offset" :always-track="alwaysTrack" :duration="duration" :click-to-scroll="clickToScroll" :bezier-easing-value="easing">
                     <ul class="nav-center">
-                        <li><a href="#home" class="scrollactive-item nav-item">Home</a></li>
                         <li><a href="#section-1" class="scrollactive-item nav-item">Section 1</a></li>
                         <li><a href="#section-2" class="scrollactive-item nav-item">Section 2</a></li>
                         <li><a href="#section-3" class="scrollactive-item nav-item">Section 3</a></li>
+                        <li><a href="#section-4" class="scrollactive-item nav-item">Section 4</a></li>
                     </ul>
                 </scrollactive>
             </div>
         </header>
 
-        <main>
-            <section id="home" class="section hero is-primary is-fullheight">
-                <div class="container">
-                    <h1 class="heading title is-1">Home</h1>
-                </div>
-            </section>
+        <div class="buttons">
+            <button @click="addNewElement()">Add new element</button>
+            <button @click="alwaysTrack = !alwaysTrack" v-text="'Always track ' + (alwaysTrack ? 'on' : 'off')"></button>
+            <button @click="clickToScroll = !clickToScroll" v-text="'Click to scroll ' + (clickToScroll ? 'on' : 'off')"></button>
+            <label for="duration">Duration</label>
+            <input type="number" v-model="duration" id="duration">
+            <label for="offset">Offset</label>
+            <input type="number" v-model="offset" id="offset">
+            <label for="easing">Easing (cubic-bezier format)</label>
+            <input type="text" v-model="easing" id="easing">
+        </div>
 
-            <section id="section-1" class="section hero is-info is-fullheight">
+        <main>
+            <section id="section-1" class="section hero is-primary is-fullheight">
                 <div class="container">
                     <h1 class="heading title is-1">Section 1</h1>
                 </div>
             </section>
 
-            <section id="section-2" class="section hero is-danger is-fullheight">
+            <section id="section-2" class="section hero is-info is-fullheight">
                 <div class="container">
                     <h1 class="heading title is-1">Section 2</h1>
                 </div>
             </section>
 
-            <section id="section-3" class="section hero is-success is-fullheight">
+            <section id="section-3" class="section hero is-danger is-fullheight">
                 <div class="container">
                     <h1 class="heading title is-1">Section 3</h1>
+                </div>
+            </section>
+
+            <section id="section-4" class="section hero is-success is-fullheight">
+                <div class="container">
+                    <h1 class="heading title is-1">Section 4</h1>
                 </div>
             </section>
         </main>
