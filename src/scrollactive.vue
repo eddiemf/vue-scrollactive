@@ -117,7 +117,7 @@
 					scrollactiveItem.classList.remove(this.activeClass);
 					let target = document.getElementById(scrollactiveItem.hash.substr(1));
 
-					if (distanceFromTop >= target.offsetTop - this.offset) {
+					if (distanceFromTop >= this.getOffsetTop(target) - this.offset) {
 						currentItem = scrollactiveItem;
 					}
 				}
@@ -179,7 +179,7 @@
 				}
 
 				let vm = this;
-				let targetDistanceFromTop = document.getElementById(event.target.hash.substr(1)).offsetTop;
+				let targetDistanceFromTop = this.getOffsetTop(document.getElementById(event.target.hash.substr(1)));
 				let startingY = window.pageYOffset;
 				let difference = targetDistanceFromTop - startingY;
 				let start = null;
@@ -207,7 +207,24 @@
 				}
 
 				window.requestAnimationFrame(step);
-			}
+			},
+
+	        /**
+             * Gets the top offset position of an element in the document.
+             *
+             * @param  {Element} element
+             * @return {Number}
+             */
+            getOffsetTop(element) {
+                let yPosition = 0;
+
+                while (element) {
+                    yPosition += (element.offsetTop);
+                    element = element.offsetParent;
+                }
+
+                return yPosition;
+            }
 		},
 
 		mounted() {
