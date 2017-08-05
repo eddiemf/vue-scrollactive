@@ -132,15 +132,11 @@
 			},
 
 			/**
-			 * Sets the initial list of menu items, validating if there's none
-			 * or if its hash corresponds to a valid element ID.
+			 * Sets the initial list of menu items, validating if its hash
+			 * corresponds to a valid element ID.
 			 */
 			setScrollactiveItems() {
 				let scrollactiveItems = document.querySelectorAll('.scrollactive-item');
-
-				if (scrollactiveItems.length < 1) {
-					throw new Error("You must give your menu items a class of 'scrollactive-item' in order to track them.");
-				}
 
 				for (let scrollactiveItem of scrollactiveItems) {
 					if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
