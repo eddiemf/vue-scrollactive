@@ -1,4 +1,4 @@
-# Highlight your menu items as you scroll
+# vue-scrollactive
 This vue 2 component makes it simple to highlight a menu item with an 'active' class as you scroll.
 
  - Highlights menu items as you scroll
@@ -57,7 +57,7 @@ methods: {
 }
 ```
 
-Make sure to set the `ref=scrollactive` property when you call the component in order to access the function as I do, or feel free to do it in any other way you would like, you just need to call the `setScrollactiveItems()` function.
+Make sure to set the `ref="scrollactive"` property when you call the component in order to access the function as I do, or feel free to do it in any other way you would like, you just need to call the `setScrollactiveItems()` function.
 
 ## Configuration
 All options should be passed as a prop in the `<scrollactive>` component as you can see in the example below:
@@ -69,8 +69,9 @@ All options should be passed as a prop in the `<scrollactive>` component as you 
 	bezier-easing-value=".5,0,.35,1">
 </scrollactive>
 ```
+Remember that all options are optional and you can see the default values in the Options sections.
 
-### Props
+### Options
 ``` javascript
 /**
  * Class that will be applied in the menu item.
