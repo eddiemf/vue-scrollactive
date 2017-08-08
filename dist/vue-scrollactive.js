@@ -854,11 +854,11 @@ exports.default = {
 					}
 				}
 
-				event.target.classList.add(this.activeClass);
+				event.currentTarget.classList.add(this.activeClass);
 			}
 
 			var vm = this;
-			var targetDistanceFromTop = this.getOffsetTop(document.getElementById(event.target.hash.substr(1)));
+			var targetDistanceFromTop = this.getOffsetTop(document.getElementById(event.currentTarget.hash.substr(1)));
 			var startingY = window.pageYOffset;
 			var difference = targetDistanceFromTop - startingY;
 			var start = null;

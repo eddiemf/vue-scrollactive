@@ -171,11 +171,11 @@
 						scrollactiveItem.classList.remove(this.activeClass);
 					}
 
-					event.target.classList.add(this.activeClass);
+					event.currentTarget.classList.add(this.activeClass);
 				}
 
 				let vm = this;
-				let targetDistanceFromTop = this.getOffsetTop(document.getElementById(event.target.hash.substr(1)));
+				let targetDistanceFromTop = this.getOffsetTop(document.getElementById(event.currentTarget.hash.substr(1)));
 				let startingY = window.pageYOffset;
 				let difference = targetDistanceFromTop - startingY;
 				let start = null;
