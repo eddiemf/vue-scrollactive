@@ -109,7 +109,7 @@
 			 * the addition of the active class in the current section item
 			 * and fire the change event.
 			 */
-			onScroll() {
+			onScroll(event) {
 				let distanceFromTop = window.scrollY;
 				let currentItem;
 
