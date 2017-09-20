@@ -1,241 +1,249 @@
 <template>
-	<nav class="scrollactive-nav">
-		<slot></slot>
-	</nav>
+  <nav class="scrollactive-nav">
+    <slot></slot>
+  </nav>
 </template>
 
 <script>
-	export default {
-		props: {
-			/**
-			 * Class that will be applied in the menu item.
-			 *
-			 * @default  'is-active'
-			 * @type {String}
-			 */
-			activeClass: {
-				type: String,
-				default: 'is-active'
-			},
+import bezierEasing from 'bezier-easing';
 
-			/**
-			 * Amount of space between top of screen and the section to
-			 * highlight. (Usually your fixed header's height)
-			 *
-			 * @default 20
-			 * @type {Number}
-			 */
-			offset: {
-				type: Number,
-				default: 20
-			},
+export default {
+  props: {
+    /**
+    * Class that will be applied in the menu item.
+    *
+    * @default  'is-active'
+    * @type {String}
+    */
+    activeClass: {
+      type: String,
+      default: 'is-active',
+    },
 
-			/**
-			 * Enables/disables the scrolling when clicking in a menu item.
-			 * Disable if you'd like to handle the scrolling by your own.
-			 *
-			 * @default true
-			 * @type {Boolean}
-			 */
-			clickToScroll: {
-				type: Boolean,
-				default: true
-			},
+    /**
+    * Amount of space between top of screen and the section to
+    * highlight. (Usually your fixed header's height)
+    *
+    * @default 20
+    * @type {Number}
+    */
+    offset: {
+      type: Number,
+      default: 20,
+    },
 
-			/**
-			 * The duration of the scroll animation when clicking to scroll
-			 * is activated.
-			 *
-			 * @default 600
-			 * @type {Number}
-			 */
-			duration: {
-				type: Number,
-				default: 600
-			},
+    /**
+    * Enables/disables the scrolling when clicking in a menu item.
+    * Disable if you'd like to handle the scrolling by your own.
+    *
+    * @default true
+    * @type {Boolean}
+    */
+    clickToScroll: {
+      type: Boolean,
+      default: true,
+    },
 
-			/**
-			 * Defines if the plugin should track the section change when
-			 * clicking an item to scroll to its section. If set to true,
-			 * it will always keep track and change the active class to the
-			 * current section while scrolling, if false, the active class
-			 * will be immediately applied to the clicked menu item, ignoring
-			 * the passed sections until the scrolling is over.
-			 *
-			 * @default false
-			 * @type {Boolean}
-			 */
-			alwaysTrack: {
-				type: Boolean,
-				default: false
-			},
+    /**
+    * The duration of the scroll animation when clicking to scroll
+    * is activated.
+    *
+    * @default 600
+    * @type {Number}
+    */
+    duration: {
+      type: Number,
+      default: 600,
+    },
 
-			/**
-			 * Your custom easing value for the click to scroll functionality.
-			 * It must be a string with 4 values separated by commas in a
-			 * cubic bezier format.
-			 *
-			 * @default '.5,0,.35,1'
-			 * @type {String}
-			 */
-			bezierEasingValue: {
-				type: String,
-				default: '.5,0,.35,1'
-			}
-		},
+    /**
+    * Defines if the plugin should track the section change when
+    * clicking an item to scroll to its section. If set to true,
+    * it will always keep track and change the active class to the
+    * current section while scrolling, if false, the active class
+    * will be immediately applied to the clicked menu item, ignoring
+    * the passed sections until the scrolling is over.
+    *
+    * @default false
+    * @type {Boolean}
+    */
+    alwaysTrack: {
+      type: Boolean,
+      default: false,
+    },
 
-		data() {
-			return {
-				scrollactiveItems: null,
-				bezierEasing: require('bezier-easing'),
-				lastActiveItem: null
-			}
-		},
+    /**
+    * Your custom easing value for the click to scroll functionality.
+    * It must be a string with 4 values separated by commas in a
+    * cubic bezier format.
+    *
+    * @default '.5,0,.35,1'
+    * @type {String}
+    */
+    bezierEasingValue: {
+      type: String,
+      default: '.5,0,.35,1',
+    },
+  },
 
-		computed: {
-			/**
-			 * Transforms the bezier easing string value into an array.
-			 *
-			 * @return {Array}
-			 */
-			cubicBezierArray() {
-				return this.bezierEasingValue.split(',');
-			}
-		},
+  data() {
+    return {
+      scrollactiveItems: null,
+      bezierEasing,
+      lastActiveItem: null,
+    };
+  },
 
-		methods: {
-			/**
-			 * Will be called when scrolling event is triggered to handle
-			 * the addition of the active class in the current section item
-			 * and fire the change event.
-			 */
-			onScroll(event) {
-				let distanceFromTop = window.scrollY;
-				let currentItem;
+  computed: {
+    /**
+    * Transforms the bezier easing string value into an array.
+    *
+    * @return {Array}
+    */
+    cubicBezierArray() {
+      return this.bezierEasingValue.split(',');
+    },
+  },
 
-				for (let scrollactiveItem of this.scrollactiveItems) {
-					scrollactiveItem.classList.remove(this.activeClass);
-					let target = document.getElementById(scrollactiveItem.hash.substr(1));
+  methods: {
+    /**
+    * Will be called when scrolling event is triggered to handle
+    * the addition of the active class in the current section item
+    * and fire the change event.
+    */
+    onScroll(event) {
+      const distanceFromTop = window.scrollY;
+      let currentItem;
 
-					if (distanceFromTop >= this.getOffsetTop(target) - this.offset) {
-						currentItem = scrollactiveItem;
-					}
-				}
+      this.scrollactiveItems.forEach((scrollactiveItem) => {
+        scrollactiveItem.classList.remove(this.activeClass);
+        const target = document.getElementById(scrollactiveItem.hash.substr(1));
 
-				if (currentItem != this.lastActiveItem) {
-					// Makes sure to not fire when it's mounted
-					if (this.lastActiveItem) this.$emit('itemchanged', event, currentItem, this.lastActiveItem);
-					this.lastActiveItem = currentItem;
-				}
+        if (distanceFromTop >= this.getOffsetTop(target) - this.offset) {
+          currentItem = scrollactiveItem;
+        }
+      });
 
-				if (currentItem) currentItem.classList.add(this.activeClass);
-			},
+      if (currentItem !== this.lastActiveItem) {
+        // Makes sure to not fire when it's mounted
+        if (this.lastActiveItem) this.$emit('itemchanged', event, currentItem, this.lastActiveItem);
+        this.lastActiveItem = currentItem;
+      }
 
-			/**
-			 * Sets the initial list of menu items, validating if its hash
-			 * corresponds to a valid element ID.
-			 */
-			setScrollactiveItems() {
-				let scrollactiveItems = document.querySelectorAll('.scrollactive-item');
+      if (currentItem) currentItem.classList.add(this.activeClass);
+    },
 
-				for (let scrollactiveItem of scrollactiveItems) {
-					if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
-						throw new Error("Element '" + scrollactiveItem.hash + "' was not found. Make sure it is set in the DOM.");
-					}
-				}
+    /**
+    * Sets the initial list of menu items, validating if its hash
+    * corresponds to a valid element ID.
+    */
+    setScrollactiveItems() {
+      const scrollactiveItems = document.querySelectorAll('.scrollactive-item');
 
-				this.scrollactiveItems = scrollactiveItems;
+      scrollactiveItems.forEach((scrollactiveItem) => {
+        if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
+          throw new Error(`Element '${scrollactiveItem.hash}' was not found. Make sure it is set in the DOM.`);
+        }
+      });
 
-				if (this.clickToScroll) {
-					for (let scrollactiveItem of scrollactiveItems) {
-						scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
-					}
-				} else {
-					for (let scrollactiveItem of scrollactiveItems) {
-						scrollactiveItem.removeEventListener('click', this.scrollToTargetElement);
-					}
-				}
-			},
+      this.scrollactiveItems = scrollactiveItems;
 
-			/**
-			 * Handles the scrolling when clicking a menu item.
-			 */
-			scrollToTargetElement(event) {
-				event.preventDefault();
+      if (this.clickToScroll) {
+        scrollactiveItems.forEach((scrollactiveItem) => {
+          scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
+        });
+      } else {
+        scrollactiveItems.forEach((scrollactiveItem) => {
+          scrollactiveItem.removeEventListener('click', this.scrollToTargetElement);
+        });
+      }
+    },
 
-				if (!this.alwaysTrack) {
-					window.removeEventListener('scroll', this.onScroll);
-					window.cancelAnimationFrame(window.AFRequestID);
+    /**
+    * Handles the scrolling when clicking a menu item.
+    */
+    scrollToTargetElement(event) {
+      event.preventDefault();
 
-					for (let scrollactiveItem of this.scrollactiveItems) {
-						scrollactiveItem.classList.remove(this.activeClass);
-					}
+      if (!this.alwaysTrack) {
+        window.removeEventListener('scroll', this.onScroll);
+        window.cancelAnimationFrame(window.AFRequestID);
 
-					event.currentTarget.classList.add(this.activeClass);
-				}
+        this.scrollactiveItems.forEach((scrollactiveItem) => {
+          scrollactiveItem.classList.remove(this.activeClass);
+        });
 
-				let vm = this;
-				let targetDistanceFromTop = this.getOffsetTop(document.getElementById(event.currentTarget.hash.substr(1)));
-				let startingY = window.pageYOffset;
-				let difference = targetDistanceFromTop - startingY;
-				let start = null;
-				let easing = vm.bezierEasing(this.cubicBezierArray[0], this.cubicBezierArray[1],this.cubicBezierArray[2],this.cubicBezierArray[3]);
+        event.currentTarget.classList.add(this.activeClass);
+      }
 
-				function step(timestamp) {
-					if (!start) start = timestamp;
+      const vm = this;
+      const target = document.getElementById(event.currentTarget.hash.substr(1));
+      const targetDistanceFromTop = this.getOffsetTop(target);
+      const startingY = window.pageYOffset;
+      const difference = targetDistanceFromTop - startingY;
+      const easing = vm.bezierEasing(
+        this.cubicBezierArray[0],
+        this.cubicBezierArray[1],
+        this.cubicBezierArray[2],
+        this.cubicBezierArray[3],
+      );
+      let start = null;
 
-					let progress = timestamp - start;
-					let progressPercentage = progress / vm.duration;
-					let distanceFromTop = window.scrollY;
+      function step(timestamp) {
+        if (!start) start = timestamp;
 
-					if (progress >= vm.duration) progress = vm.duration;
-					if (progressPercentage >= 1) progressPercentage = 1;
+        let progress = timestamp - start;
+        let progressPercentage = progress / vm.duration;
 
-					let perTick = startingY + easing(progressPercentage) * (difference - vm.offset);
+        if (progress >= vm.duration) progress = vm.duration;
+        if (progressPercentage >= 1) progressPercentage = 1;
 
-					window.scrollTo(0, perTick);
+        const perTick = startingY + (easing(progressPercentage) * (difference - vm.offset));
 
-					if (progress < vm.duration) {
-						window.AFRequestID = window.requestAnimationFrame(step);
-					} else {
-						window.addEventListener('scroll', vm.onScroll);
-					}
-				}
+        window.scrollTo(0, perTick);
 
-				window.requestAnimationFrame(step);
-			},
+        if (progress < vm.duration) {
+          window.AFRequestID = window.requestAnimationFrame(step);
+        } else {
+          window.addEventListener('scroll', vm.onScroll);
+        }
+      }
 
-	        /**
-             * Gets the top offset position of an element in the document.
-             *
-             * @param  {Element} element
-             * @return {Number}
-             */
-            getOffsetTop(element) {
-                let yPosition = 0;
+      window.requestAnimationFrame(step);
+    },
 
-                while (element) {
-                    yPosition += (element.offsetTop);
-                    element = element.offsetParent;
-                }
+    /**
+    * Gets the top offset position of an element in the document.
+    *
+    * @param  {Element} element
+    * @return {Number}
+    */
+    getOffsetTop(element) {
+      let yPosition = 0;
+      let nextElement = element;
 
-                return yPosition;
-            }
-		},
+      while (nextElement) {
+        yPosition += (nextElement.offsetTop);
+        nextElement = nextElement.offsetParent;
+      }
 
-		mounted() {
-			this.setScrollactiveItems();
-			this.onScroll();
-			window.addEventListener('scroll', this.onScroll);
-		},
+      return yPosition;
+    },
+  },
 
-		updated() {
-			this.setScrollactiveItems();
-		},
+  mounted() {
+    this.setScrollactiveItems();
+    this.onScroll();
+    window.addEventListener('scroll', this.onScroll);
+  },
 
-		beforeDestroy() {
-			window.removeEventListener('scroll', this.onScroll);
-			window.cancelAnimationFrame(window.AFRequestID);
-		}
-	}
+  updated() {
+    this.setScrollactiveItems();
+  },
+
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.cancelAnimationFrame(window.AFRequestID);
+  },
+};
 </script>
