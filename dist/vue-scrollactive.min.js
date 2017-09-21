@@ -70,52 +70,44 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 23:
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ([
+/* 0 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__scrollactive_vue__);
 
 
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
+const Plugin = {};
 
-var _scrollactive = __webpack_require__(24);
-
-var _scrollactive2 = _interopRequireDefault(_scrollactive);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var Plugin = {};
-
-Plugin.install = function (Vue) {
+Plugin.install = (Vue) => {
   if (Plugin.install.installed) return;
 
-  Vue.component('scrollactive', _scrollactive2.default);
+  Vue.component('scrollactive', __WEBPACK_IMPORTED_MODULE_0__scrollactive_vue___default.a);
 };
 
 if (typeof window !== 'undefined' && window.Vue) {
   Plugin.install(window.Vue);
 }
 
-exports.default = Plugin;
+/* harmony default export */ __webpack_exports__["default"] = (Plugin);
+
 
 /***/ }),
-
-/***/ 24:
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var Component = __webpack_require__(25)(
+var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(26),
+  __webpack_require__(3),
   /* template */
-  __webpack_require__(58),
+  __webpack_require__(5),
   /* styles */
   null,
   /* scopeId */
@@ -123,13 +115,13 @@ var Component = __webpack_require__(25)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/mauricio/web/vue-scrollactive/src/scrollactive.vue"
+Component.options.__file = "/Users/thomasmery/Documents/WebDev/Clients/C&I/cominst.com/v2/application/web/app/themes/cominst/node_modules/vue-scrollactive/src/scrollactive.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] scrollactive.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
+  var hotAPI = require("vue-loader/node_modules/vue-hot-reload-api")
   hotAPI.install(require("vue"), false)
   if (!hotAPI.compatible) return
   module.hot.accept()
@@ -147,8 +139,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-
-/***/ 25:
+/* 2 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -245,8 +236,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-
-/***/ 26:
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -256,7 +246,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _bezierEasing = __webpack_require__(57);
+var _bezierEasing = __webpack_require__(4);
 
 var _bezierEasing2 = _interopRequireDefault(_bezierEasing);
 
@@ -377,7 +367,13 @@ exports.default = {
         scrollactiveItem.classList.remove(_this.activeClass);
         var target = document.getElementById(scrollactiveItem.hash.substr(1));
 
-        if (distanceFromTop >= _this.getOffsetTop(target) - _this.offset) {
+        var isInView = false;
+        var itemInViewTop = _this.getOffsetTop(target) - _this.offset;
+        var itemInViewBottom = itemInViewTop + target.clientHeight;
+
+        isInView = distanceFromTop >= itemInViewTop && distanceFromTop < itemInViewBottom;
+
+        if (isInView) {
           currentItem = scrollactiveItem;
         }
       });
@@ -511,8 +507,7 @@ exports.default = {
 //
 
 /***/ }),
-
-/***/ 57:
+/* 4 */
 /***/ (function(module, exports) {
 
 /**
@@ -622,8 +617,7 @@ module.exports = function bezier (mX1, mY1, mX2, mY2) {
 
 
 /***/ }),
-
-/***/ 58:
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -635,11 +629,10 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-75a6c496", module.exports)
+     require("vue-loader/node_modules/vue-hot-reload-api").rerender("data-v-75a6c496", module.exports)
   }
 }
 
 /***/ })
-
-/******/ });
+/******/ ]);
 });

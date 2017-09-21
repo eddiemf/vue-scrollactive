@@ -119,8 +119,15 @@ export default {
         scrollactiveItem.classList.remove(this.activeClass);
         const target = document.getElementById(scrollactiveItem.hash.substr(1));
 
-        if (distanceFromTop >= this.getOffsetTop(target) - this.offset) {
-          currentItem = scrollactiveItem;
+        let isInView = false;
+        let itemInViewTop = this.getOffsetTop(target) - this.offset;
+        let itemInViewBottom = itemInViewTop + target.clientHeight;
+
+        isInView = distanceFromTop >= itemInViewTop
+            && distanceFromTop < itemInViewBottom;
+
+        if (isInView) {
+            currentItem = scrollactiveItem;
         }
       });
 
