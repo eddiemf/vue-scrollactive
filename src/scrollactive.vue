@@ -112,7 +112,7 @@ export default {
     * and fire the change event.
     */
     onScroll(event) {
-      const distanceFromTop = window.scrollY;
+      const distanceFromTop = window.pageYOffset;
       let currentItem;
 
       this.scrollactiveItems.forEach((scrollactiveItem) => {
@@ -142,7 +142,7 @@ export default {
 
       scrollactiveItems.forEach((scrollactiveItem) => {
         if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
-          throw new Error(`Element '${scrollactiveItem.hash}' was not found. Make sure it is set in the DOM.`);
+          throw new Error(`[vue-scrollactive] Element '${scrollactiveItem.hash}' was not found. Make sure it is set in the DOM.`);
         }
       });
 

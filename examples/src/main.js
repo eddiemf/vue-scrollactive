@@ -2,7 +2,7 @@ import Scrollactive from '../../dist/vue-scrollactive';
 
 Vue.use(Scrollactive);
 
-const app = new Vue({
+var app = new Vue({
   el: '#app',
   data: {
     numberOfElements: document.querySelectorAll('#site-header a').length,
@@ -13,14 +13,14 @@ const app = new Vue({
     easing: '.5,0,.35,1',
   },
   methods: {
-    addNewElement() {
-      this.numberOfElements += this.numberOfElements;
-      const colorClass = this.numberOfElements % 2 === 0 ? 'is-primary' : 'is-danger';
-      const menuItem = document.createElement('div');
+    addNewElement: function () {
+      this.numberOfElements += 1;
+      var colorClass = this.numberOfElements % 2 === 0 ? 'is-primary' : 'is-danger';
+      var menuItem = document.createElement('div');
       menuItem.innerHTML = `<a href="#section-${this.numberOfElements}" class="scrollactive-item nav-item">Section ${this.numberOfElements}</a>`;
       document.querySelector('.nav-center').appendChild(menuItem.firstChild);
 
-      const section = document.createElement('div');
+      var section = document.createElement('div');
       section.innerHTML = `<section id="section-${this.numberOfElements}" class="section hero ${colorClass} is-fullheight">
       <div class="container">
       <h1 class="heading title is-1">Section ${this.numberOfElements}</h1>

@@ -83,7 +83,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0__dist_vue_scrollactive___default.a);
 
-const app = new Vue({
+var app = new Vue({
   el: '#app',
   data: {
     numberOfElements: document.querySelectorAll('#site-header a').length,
@@ -94,14 +94,14 @@ const app = new Vue({
     easing: '.5,0,.35,1',
   },
   methods: {
-    addNewElement() {
-      this.numberOfElements += this.numberOfElements;
-      const colorClass = this.numberOfElements % 2 === 0 ? 'is-primary' : 'is-danger';
-      const menuItem = document.createElement('div');
+    addNewElement: function () {
+      this.numberOfElements += 1;
+      var colorClass = this.numberOfElements % 2 === 0 ? 'is-primary' : 'is-danger';
+      var menuItem = document.createElement('div');
       menuItem.innerHTML = `<a href="#section-${this.numberOfElements}" class="scrollactive-item nav-item">Section ${this.numberOfElements}</a>`;
       document.querySelector('.nav-center').appendChild(menuItem.firstChild);
 
-      const section = document.createElement('div');
+      var section = document.createElement('div');
       section.innerHTML = `<section id="section-${this.numberOfElements}" class="section hero ${colorClass} is-fullheight">
       <div class="container">
       <h1 class="heading title is-1">Section ${this.numberOfElements}</h1>
@@ -194,12 +194,11 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "/dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 23);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ({
-
-/***/ 23:
+/******/ ([
+/* 0 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -209,7 +208,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _scrollactive = __webpack_require__(24);
+var _scrollactive = __webpack_require__(1);
 
 var _scrollactive2 = _interopRequireDefault(_scrollactive);
 
@@ -230,16 +229,14 @@ if (typeof window !== 'undefined' && window.Vue) {
 exports.default = Plugin;
 
 /***/ }),
-
-/***/ 24:
+/* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var disposed = false
-var Component = __webpack_require__(25)(
+var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(26),
+  __webpack_require__(3),
   /* template */
-  __webpack_require__(58),
+  __webpack_require__(5),
   /* styles */
   null,
   /* scopeId */
@@ -247,32 +244,12 @@ var Component = __webpack_require__(25)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/Users/mauricio/web/vue-scrollactive/src/scrollactive.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] scrollactive.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-75a6c496", Component.options)
-  } else {
-    hotAPI.reload("data-v-75a6c496", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
 
 module.exports = Component.exports
 
 
 /***/ }),
-
-/***/ 25:
+/* 2 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -369,8 +346,7 @@ module.exports = function normalizeComponent (
 
 
 /***/ }),
-
-/***/ 26:
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -380,7 +356,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _bezierEasing = __webpack_require__(57);
+var _bezierEasing = __webpack_require__(4);
 
 var _bezierEasing2 = _interopRequireDefault(_bezierEasing);
 
@@ -494,7 +470,7 @@ exports.default = {
     onScroll: function onScroll(event) {
       var _this = this;
 
-      var distanceFromTop = window.scrollY;
+      var distanceFromTop = window.pageYOffset;
       var currentItem = void 0;
 
       this.scrollactiveItems.forEach(function (scrollactiveItem) {
@@ -527,7 +503,7 @@ exports.default = {
 
       scrollactiveItems.forEach(function (scrollactiveItem) {
         if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
-          throw new Error('Element \'' + scrollactiveItem.hash + '\' was not found. Make sure it is set in the DOM.');
+          throw new Error('[vue-scrollactive] Element \'' + scrollactiveItem.hash + '\' was not found. Make sure it is set in the DOM.');
         }
       });
 
@@ -635,8 +611,7 @@ exports.default = {
 //
 
 /***/ }),
-
-/***/ 57:
+/* 4 */
 /***/ (function(module, exports) {
 
 /**
@@ -746,26 +721,17 @@ module.exports = function bezier (mX1, mY1, mX2, mY2) {
 
 
 /***/ }),
-
-/***/ 58:
-/***/ (function(module, exports, __webpack_require__) {
+/* 5 */
+/***/ (function(module, exports) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('nav', {
     staticClass: "scrollactive-nav"
   }, [_vm._t("default")], 2)
 },staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-75a6c496", module.exports)
-  }
-}
 
 /***/ })
-
-/******/ });
+/******/ ]);
 });
 
 /***/ }),
