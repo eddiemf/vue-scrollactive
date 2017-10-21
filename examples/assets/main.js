@@ -499,7 +499,7 @@ exports.default = {
     setScrollactiveItems: function setScrollactiveItems() {
       var _this2 = this;
 
-      var scrollactiveItems = document.querySelectorAll('.scrollactive-item');
+      var scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
 
       scrollactiveItems.forEach(function (scrollactiveItem) {
         if (!document.getElementById(scrollactiveItem.hash.substr(1))) {

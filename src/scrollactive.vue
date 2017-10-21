@@ -138,7 +138,7 @@ export default {
     * corresponds to a valid element ID.
     */
     setScrollactiveItems() {
-      const scrollactiveItems = document.querySelectorAll('.scrollactive-item');
+      const scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
 
       scrollactiveItems.forEach((scrollactiveItem) => {
         if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
