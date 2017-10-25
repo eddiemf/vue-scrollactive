@@ -29,6 +29,15 @@ var app = new Vue({
       `;
       document.querySelector('main').appendChild(section.firstChild);
     },
+    rmElement () {
+      if (this.numberOfElements >= 1) {
+        let rdmId = Math.floor(Math.random() * (this.numberOfElements + 1))
+
+        document.querySelector(`.nav-center a[href$=section-${rdmId}]`).remove()
+
+        document.querySelector('main').removeChild(document.querySelector(`#section-${rdmId}`))
+      }
+    }
   },
 });
 
