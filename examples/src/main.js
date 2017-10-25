@@ -28,8 +28,6 @@ var app = new Vue({
       </section>
       `;
       document.querySelector('main').appendChild(section.firstChild);
-
-      this.$refs.scrollactive.setScrollactiveItems();
     },
   },
 });

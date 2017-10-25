@@ -1,5 +1,5 @@
 <template>
-  <nav class="scrollactive-nav">
+  <nav class="scrollactive-nav" ref="scrollactive-nav-wrapper">
     <slot></slot>
   </nav>
 </template>
@@ -88,7 +88,8 @@ export default {
 
   data() {
     return {
-      scrollactiveItems: null,
+      observer: null,
+      scrollactiveItems: [],
       bezierEasing,
       lastActiveItem: null,
     };
@@ -134,26 +135,17 @@ export default {
     },
 
     /**
-    * Sets the initial list of menu items, validating if its hash
-    * corresponds to a valid element ID.
+    * Gets the list of menu items, adding or removing the click listener
+    * depending on the clickToScroll prop
     */
-    setScrollactiveItems() {
-      const scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
-
-      scrollactiveItems.forEach((scrollactiveItem) => {
-        if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
-          throw new Error(`[vue-scrollactive] Element '${scrollactiveItem.hash}' was not found. Make sure it is set in the DOM.`);
-        }
-      });
-
-      this.scrollactiveItems = scrollactiveItems;
-
+    initScrollactiveItems() {
+      this.scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
       if (this.clickToScroll) {
-        scrollactiveItems.forEach((scrollactiveItem) => {
+        this.scrollactiveItems.forEach((scrollactiveItem) => {
           scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
         });
       } else {
-        scrollactiveItems.forEach((scrollactiveItem) => {
+        this.scrollactiveItems.forEach((scrollactiveItem) => {
           scrollactiveItem.removeEventListener('click', this.scrollToTargetElement);
         });
       }
@@ -164,6 +156,13 @@ export default {
     */
     scrollToTargetElement(event) {
       event.preventDefault();
+
+      const hash = event.currentTarget.hash
+      const target = document.getElementById(hash.substr(1));
+      if (!target) {
+        console.warn(`[vue-scrollactive] Element '${hash}' was not found. Make sure it is set in the DOM.`);
+        return ;
+      }
 
       if (!this.alwaysTrack) {
         window.removeEventListener('scroll', this.onScroll);
@@ -177,7 +176,6 @@ export default {
       }
 
       const vm = this;
-      const target = document.getElementById(event.currentTarget.hash.substr(1));
       const targetDistanceFromTop = this.getOffsetTop(target);
       const startingY = window.pageYOffset;
       const difference = targetDistanceFromTop - startingY;
@@ -206,6 +204,13 @@ export default {
           window.AFRequestID = window.requestAnimationFrame(step);
         } else {
           window.addEventListener('scroll', vm.onScroll);
+          // Update the location hash after we finished animating
+          if(history.pushState) {
+              history.pushState(null, null, hash);
+          }
+          else {
+              location.hash = hash;
+          }
         }
       }
 
@@ -232,13 +237,22 @@ export default {
   },
 
   mounted() {
-    this.setScrollactiveItems();
+    let MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+    if (!this.observer) {
+      // Watch for DOM changes in the scrollactive element wrapper
+      this.observer = new MutationObserver(this.initScrollactiveItems);
+      this.observer.observe(this.$refs['scrollactive-nav-wrapper'], {
+          childList: true,
+          subtree: true
+      });
+    }
+    this.initScrollactiveItems();
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
   },
 
   updated() {
-    this.setScrollactiveItems();
+    this.initScrollactiveItems();
   },
 
   beforeDestroy() {
