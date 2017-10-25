@@ -152,6 +152,13 @@ export default {
     },
 
     /**
+     * Keep the old setScrollactiveItems method in order to avoid
+     * breaking existing projects that used the previous version and upgraded to this one
+     * @deprecated
+     */
+    setScrollactiveItems() { this.initScrollactiveItems() },
+
+    /**
     * Handles the scrolling when clicking a menu item.
     */
     scrollToTargetElement(event) {
