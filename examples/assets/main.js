@@ -83,42 +83,53 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 Vue.use(__WEBPACK_IMPORTED_MODULE_0__dist_vue_scrollactive___default.a);
 
-var app = new Vue({
+const app = new Vue({
   el: '#app',
   data: {
-    numberOfElements: document.querySelectorAll('#site-header a').length,
+    elements: [],
     alwaysTrack: false,
     duration: 600,
     clickToScroll: true,
     offset: 52,
     easing: '.5,0,.35,1',
   },
+  computed: {
+    numberOfElements() {
+      return this.elements.length;
+    },
+  },
+  mounted() {
+    this.elements = this.$el.querySelectorAll('.scrollactive-item');
+  },
   methods: {
-    addNewElement: function () {
-      this.numberOfElements += 1;
-      var colorClass = this.numberOfElements % 2 === 0 ? 'is-primary' : 'is-danger';
-      var menuItem = document.createElement('div');
-      menuItem.innerHTML = `<a href="#section-${this.numberOfElements}" class="scrollactive-item nav-item">Section ${this.numberOfElements}</a>`;
+    addNewElement() {
+      const sectionNumber = this.numberOfElements + 1;
+      const colorClass = this.numberOfElements % 2 === 0 ? 'is-primary' : 'is-danger';
+      const menuItem = document.createElement('div');
+      menuItem.innerHTML = `<a href="#section-${sectionNumber}" class="scrollactive-item nav-item">Section ${sectionNumber}</a>`;
       document.querySelector('.nav-center').appendChild(menuItem.firstChild);
 
-      var section = document.createElement('div');
-      section.innerHTML = `<section id="section-${this.numberOfElements}" class="section hero ${colorClass} is-fullheight">
+      const section = document.createElement('div');
+      section.innerHTML = `<section id="section-${sectionNumber}" class="section hero ${colorClass} is-fullheight">
       <div class="container">
-      <h1 class="heading title is-1">Section ${this.numberOfElements}</h1>
+      <h1 class="heading title is-1">Section ${sectionNumber}</h1>
       </div>
       </section>
       `;
       document.querySelector('main').appendChild(section.firstChild);
+      this.elements = this.$el.querySelectorAll('.scrollactive-item');
     },
-    rmElement () {
+    removeElement() {
       if (this.numberOfElements >= 1) {
-        let rdmId = Math.floor(Math.random() * (this.numberOfElements + 1))
+        const elementsIds = [].map.call(this.elements, el => el.hash);
+        const lastElementId = elementsIds.slice(-1);
 
-        document.querySelector(`.nav-center a[href$=section-${rdmId}]`).remove()
+        document.querySelector(`.nav-center a[href="${lastElementId}"]`).remove();
+        document.querySelector('main').removeChild(document.querySelector(lastElementId));
 
-        document.querySelector('main').removeChild(document.querySelector(`#section-${rdmId}`))
+        this.elements = this.$el.querySelectorAll('.scrollactive-item');
       }
-    }
+    },
   },
 });
 
