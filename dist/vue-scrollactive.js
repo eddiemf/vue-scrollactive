@@ -108,6 +108,7 @@ exports.default = Plugin;
 /* 1 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
 var Component = __webpack_require__(2)(
   /* script */
   __webpack_require__(3),
@@ -120,6 +121,25 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
+Component.options.__file = "/Users/mauricio/web/vue-scrollactive/src/scrollactive.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] scrollactive.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-75a6c496", Component.options)
+  } else {
+    hotAPI.reload("data-v-75a6c496", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
 
 module.exports = Component.exports
 
@@ -322,6 +342,7 @@ exports.default = {
       observer: null,
       scrollactiveItems: [],
       bezierEasing: _bezierEasing2.default,
+      currentItem: null,
       lastActiveItem: null
     };
   },
@@ -329,49 +350,90 @@ exports.default = {
 
   computed: {
     /**
-    * Transforms the bezier easing string value into an array.
+    * Computes the bezier easing string value into an array.
     *
-    * @return {Array}
+    * @return {Array.<string>}
     */
     cubicBezierArray: function cubicBezierArray() {
       return this.bezierEasingValue.split(',');
     }
   },
 
+  mounted: function mounted() {
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+    if (!this.observer) {
+      // Watch for DOM changes in the scrollactive element wrapper
+      this.observer = new MutationObserver(this.initScrollactiveItems);
+      this.observer.observe(this.$refs['scrollactive-nav-wrapper'], {
+        childList: true,
+        subtree: true
+      });
+    }
+
+    this.initScrollactiveItems();
+    this.removeActiveClass();
+    this.currentItem = this.getItemInsideWindow();
+
+    if (this.currentItem) this.currentItem.classList.add(this.activeClass);
+
+    window.addEventListener('scroll', this.onScroll);
+  },
+  updated: function updated() {
+    this.initScrollactiveItems();
+  },
+  beforeDestroy: function beforeDestroy() {
+    window.removeEventListener('scroll', this.onScroll);
+    window.cancelAnimationFrame(window.AFRequestID);
+  },
+
+
   methods: {
     /**
-    * Will be called when scrolling event is triggered to handle
-    * the addition of the active class in the current section item
-    * and fire the change event.
+    * Will be called when scrolling event is triggered to handle the addition of the active class
+    * in the current section item and fire the change event.
+    *
+    * @param {Object} event Scroll event.
     */
     onScroll: function onScroll(event) {
-      var _this = this;
+      this.currentItem = this.getItemInsideWindow();
 
-      var distanceFromTop = window.pageYOffset;
-      var currentItem = void 0;
-
-      [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
-        scrollactiveItem.classList.remove(_this.activeClass);
-        var target = document.getElementById(scrollactiveItem.hash.substr(1));
-
-        if (distanceFromTop >= _this.getOffsetTop(target) - _this.offset) {
-          currentItem = scrollactiveItem;
-        }
-      });
-
-      if (currentItem !== this.lastActiveItem) {
-        // Makes sure to not fire when it's mounted
-        if (this.lastActiveItem) this.$emit('itemchanged', event, currentItem, this.lastActiveItem);
-        this.lastActiveItem = currentItem;
+      if (this.currentItem !== this.lastActiveItem) {
+        this.removeActiveClass();
+        this.$emit('itemchanged', event, this.currentItem, this.lastActiveItem);
+        this.lastActiveItem = this.currentItem;
       }
 
-      if (currentItem) currentItem.classList.add(this.activeClass);
+      // Current item might be null if not inside any section
+      if (this.currentItem) this.currentItem.classList.add(this.activeClass);
     },
 
 
     /**
-    * Gets the list of menu items, adding or removing the click listener
-    * depending on the clickToScroll prop
+     * Gets the scrollactive item that corresponds to the current section inside the window
+     *
+     * @return {node} Scrollactive item node.
+     */
+    getItemInsideWindow: function getItemInsideWindow() {
+      var _this = this;
+
+      var currentItem = void 0;
+
+      [].forEach.call(this.scrollactiveItems, function (node) {
+        var target = document.getElementById(node.hash.substr(1));
+
+        if (window.pageYOffset >= _this.getOffsetTop(target) - _this.offset) {
+          currentItem = node;
+        }
+      });
+
+      return currentItem;
+    },
+
+
+    /**
+    * Sets the list of menu items, adding or removing the click listener depending on the
+    * clickToScroll prop.
     */
     initScrollactiveItems: function initScrollactiveItems() {
       var _this2 = this;
@@ -382,17 +444,19 @@ exports.default = {
         [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
           scrollactiveItem.addEventListener('click', _this2.scrollToTargetElement);
         });
-      } else {
-        [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
-          scrollactiveItem.removeEventListener('click', _this2.scrollToTargetElement);
-        });
+        return;
       }
+
+      [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
+        scrollactiveItem.removeEventListener('click', _this2.scrollToTargetElement);
+      });
     },
 
 
     /**
-     * Keep the old setScrollactiveItems method in order to avoid
-     * breaking existing projects that used the previous version and upgraded to this one
+     * Keep the old setScrollactiveItems method in order to avoid breaking existing projects that
+     * used the previous version and upgraded to this one.
+     *
      * @deprecated
      */
     setScrollactiveItems: function setScrollactiveItems() {
@@ -402,6 +466,8 @@ exports.default = {
 
     /**
     * Handles the scrolling when clicking a menu item.
+    *
+    * @param {Object} event The click event.
     */
     scrollToTargetElement: function scrollToTargetElement(event) {
       var _this3 = this;
@@ -409,55 +475,58 @@ exports.default = {
       event.preventDefault();
 
       var hash = event.currentTarget.hash;
+
       var target = document.getElementById(hash.substr(1));
+
       if (!target) {
         console.warn('[vue-scrollactive] Element \'' + hash + '\' was not found. Make sure it is set in the DOM.');
         return;
       }
 
+      /**
+       *  Temporarily removes the scroll listener and the request animation frame so the active
+       *  class will only be applied to the clicked element, and not all elements while the window
+       *  is scrolling.
+       */
       if (!this.alwaysTrack) {
         window.removeEventListener('scroll', this.onScroll);
         window.cancelAnimationFrame(window.AFRequestID);
 
-        [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
-          scrollactiveItem.classList.remove(_this3.activeClass);
-        });
-
+        this.removeActiveClass();
         event.currentTarget.classList.add(this.activeClass);
       }
 
-      var vm = this;
       var targetDistanceFromTop = this.getOffsetTop(target);
       var startingY = window.pageYOffset;
       var difference = targetDistanceFromTop - startingY;
-      var easing = vm.bezierEasing(this.cubicBezierArray[0], this.cubicBezierArray[1], this.cubicBezierArray[2], this.cubicBezierArray[3]);
+      var easing = this.bezierEasing(this.cubicBezierArray[0], this.cubicBezierArray[1], this.cubicBezierArray[2], this.cubicBezierArray[3]);
       var start = null;
 
-      function step(timestamp) {
+      var step = function step(timestamp) {
         if (!start) start = timestamp;
 
         var progress = timestamp - start;
-        var progressPercentage = progress / vm.duration;
+        var progressPercentage = progress / _this3.duration;
 
-        if (progress >= vm.duration) progress = vm.duration;
+        if (progress >= _this3.duration) progress = _this3.duration;
         if (progressPercentage >= 1) progressPercentage = 1;
 
-        var perTick = startingY + easing(progressPercentage) * (difference - vm.offset);
+        var perTick = startingY + easing(progressPercentage) * (difference - _this3.offset);
 
         window.scrollTo(0, perTick);
 
-        if (progress < vm.duration) {
+        if (progress < _this3.duration) {
           window.AFRequestID = window.requestAnimationFrame(step);
         } else {
-          window.addEventListener('scroll', vm.onScroll);
-          // Update the location hash after we finished animating
-          if (history.pushState) {
-            history.pushState(null, null, hash);
+          window.addEventListener('scroll', _this3.onScroll);
+          // Update the location hash after we've finished animating
+          if (window.history.pushState) {
+            window.history.pushState(null, null, hash);
           } else {
-            location.hash = hash;
+            window.location.hash = hash;
           }
         }
-      }
+      };
 
       window.requestAnimationFrame(step);
     },
@@ -467,7 +536,7 @@ exports.default = {
     * Gets the top offset position of an element in the document.
     *
     * @param  {Element} element
-    * @return {Number}
+    * @return {number}
     */
     getOffsetTop: function getOffsetTop(element) {
       var yPosition = 0;
@@ -479,29 +548,19 @@ exports.default = {
       }
 
       return yPosition;
-    }
-  },
+    },
 
-  mounted: function mounted() {
-    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
-    if (!this.observer) {
-      // Watch for DOM changes in the scrollactive element wrapper
-      this.observer = new MutationObserver(this.initScrollactiveItems);
-      this.observer.observe(this.$refs['scrollactive-nav-wrapper'], {
-        childList: true,
-        subtree: true
+
+    /**
+     * Removes the active class from all scrollactive items.
+     */
+    removeActiveClass: function removeActiveClass() {
+      var _this4 = this;
+
+      [].forEach.call(this.scrollactiveItems, function (node) {
+        node.classList.remove(_this4.activeClass);
       });
     }
-    this.initScrollactiveItems();
-    this.onScroll();
-    window.addEventListener('scroll', this.onScroll);
-  },
-  updated: function updated() {
-    this.initScrollactiveItems();
-  },
-  beforeDestroy: function beforeDestroy() {
-    window.removeEventListener('scroll', this.onScroll);
-    window.cancelAnimationFrame(window.AFRequestID);
   }
 }; //
 //
@@ -622,7 +681,7 @@ module.exports = function bezier (mX1, mY1, mX2, mY2) {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('nav', {
@@ -630,6 +689,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "scrollactive-nav"
   }, [_vm._t("default")], 2)
 },staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-75a6c496", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
