@@ -319,7 +319,8 @@ exports.default = {
 
   data: function data() {
     return {
-      scrollactiveItems: null,
+      observer: null,
+      scrollactiveItems: [],
       bezierEasing: _bezierEasing2.default,
       lastActiveItem: null
     };
@@ -369,31 +370,32 @@ exports.default = {
 
 
     /**
-    * Sets the initial list of menu items, validating if its hash
-    * corresponds to a valid element ID.
+    * Gets the list of menu items, adding or removing the click listener
+    * depending on the clickToScroll prop
     */
-    setScrollactiveItems: function setScrollactiveItems() {
+    initScrollactiveItems: function initScrollactiveItems() {
       var _this2 = this;
 
-      var scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
-
-      scrollactiveItems.forEach(function (scrollactiveItem) {
-        if (!document.getElementById(scrollactiveItem.hash.substr(1))) {
-          throw new Error('[vue-scrollactive] Element \'' + scrollactiveItem.hash + '\' was not found. Make sure it is set in the DOM.');
-        }
-      });
-
-      this.scrollactiveItems = scrollactiveItems;
-
+      this.scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
       if (this.clickToScroll) {
-        scrollactiveItems.forEach(function (scrollactiveItem) {
+        this.scrollactiveItems.forEach(function (scrollactiveItem) {
           scrollactiveItem.addEventListener('click', _this2.scrollToTargetElement);
         });
       } else {
-        scrollactiveItems.forEach(function (scrollactiveItem) {
+        this.scrollactiveItems.forEach(function (scrollactiveItem) {
           scrollactiveItem.removeEventListener('click', _this2.scrollToTargetElement);
         });
       }
+    },
+
+
+    /**
+     * Keep the old setScrollactiveItems method in order to avoid
+     * breaking existing projects that used the previous version and upgraded to this one
+     * @deprecated
+     */
+    setScrollactiveItems: function setScrollactiveItems() {
+      this.initScrollactiveItems();
     },
 
 
@@ -404,6 +406,13 @@ exports.default = {
       var _this3 = this;
 
       event.preventDefault();
+
+      var hash = event.currentTarget.hash;
+      var target = document.getElementById(hash.substr(1));
+      if (!target) {
+        console.warn('[vue-scrollactive] Element \'' + hash + '\' was not found. Make sure it is set in the DOM.');
+        return;
+      }
 
       if (!this.alwaysTrack) {
         window.removeEventListener('scroll', this.onScroll);
@@ -417,7 +426,6 @@ exports.default = {
       }
 
       var vm = this;
-      var target = document.getElementById(event.currentTarget.hash.substr(1));
       var targetDistanceFromTop = this.getOffsetTop(target);
       var startingY = window.pageYOffset;
       var difference = targetDistanceFromTop - startingY;
@@ -441,6 +449,12 @@ exports.default = {
           window.AFRequestID = window.requestAnimationFrame(step);
         } else {
           window.addEventListener('scroll', vm.onScroll);
+          // Update the location hash after we finished animating
+          if (history.pushState) {
+            history.pushState(null, null, hash);
+          } else {
+            location.hash = hash;
+          }
         }
       }
 
@@ -468,12 +482,21 @@ exports.default = {
   },
 
   mounted: function mounted() {
-    this.setScrollactiveItems();
+    var MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+    if (!this.observer) {
+      // Watch for DOM changes in the scrollactive element wrapper
+      this.observer = new MutationObserver(this.initScrollactiveItems);
+      this.observer.observe(this.$refs['scrollactive-nav-wrapper'], {
+        childList: true,
+        subtree: true
+      });
+    }
+    this.initScrollactiveItems();
     this.onScroll();
     window.addEventListener('scroll', this.onScroll);
   },
   updated: function updated() {
-    this.setScrollactiveItems();
+    this.initScrollactiveItems();
   },
   beforeDestroy: function beforeDestroy() {
     window.removeEventListener('scroll', this.onScroll);
@@ -602,6 +625,7 @@ module.exports = function bezier (mX1, mY1, mX2, mY2) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('nav', {
+    ref: "scrollactive-nav-wrapper",
     staticClass: "scrollactive-nav"
   }, [_vm._t("default")], 2)
 },staticRenderFns: []}
