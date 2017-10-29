@@ -23,7 +23,7 @@
 
     <div class="buttons">
       <button @click="addNewElement()">Add new element</button>
-      <button @click="removeElement()">Remove existing element</button>
+      <button @click="removeElement()">Remove last element</button>
       <button @click="alwaysTrack = !alwaysTrack" v-text="'Always track ' + (alwaysTrack ? 'on' : 'off')"></button>
       <button @click="clickToScroll = !clickToScroll" v-text="'Click to scroll ' + (clickToScroll ? 'on' : 'off')"></button>
       <label for="duration">Duration</label>
