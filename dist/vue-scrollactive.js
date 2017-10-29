@@ -350,7 +350,7 @@ exports.default = {
       var distanceFromTop = window.pageYOffset;
       var currentItem = void 0;
 
-      this.scrollactiveItems.forEach(function (scrollactiveItem) {
+      [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
         scrollactiveItem.classList.remove(_this.activeClass);
         var target = document.getElementById(scrollactiveItem.hash.substr(1));
 
@@ -377,12 +377,13 @@ exports.default = {
       var _this2 = this;
 
       this.scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
+
       if (this.clickToScroll) {
-        this.scrollactiveItems.forEach(function (scrollactiveItem) {
+        [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
           scrollactiveItem.addEventListener('click', _this2.scrollToTargetElement);
         });
       } else {
-        this.scrollactiveItems.forEach(function (scrollactiveItem) {
+        [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
           scrollactiveItem.removeEventListener('click', _this2.scrollToTargetElement);
         });
       }
@@ -418,7 +419,7 @@ exports.default = {
         window.removeEventListener('scroll', this.onScroll);
         window.cancelAnimationFrame(window.AFRequestID);
 
-        this.scrollactiveItems.forEach(function (scrollactiveItem) {
+        [].forEach.call(this.scrollactiveItems, function (scrollactiveItem) {
           scrollactiveItem.classList.remove(_this3.activeClass);
         });
 

@@ -116,7 +116,7 @@ export default {
       const distanceFromTop = window.pageYOffset;
       let currentItem;
 
-      this.scrollactiveItems.forEach((scrollactiveItem) => {
+      [].forEach.call(this.scrollactiveItems, (scrollactiveItem) => {
         scrollactiveItem.classList.remove(this.activeClass);
         const target = document.getElementById(scrollactiveItem.hash.substr(1));
 
@@ -140,12 +140,13 @@ export default {
     */
     initScrollactiveItems() {
       this.scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
+
       if (this.clickToScroll) {
-        this.scrollactiveItems.forEach((scrollactiveItem) => {
+        [].forEach.call(this.scrollactiveItems, (scrollactiveItem) => {
           scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
         });
       } else {
-        this.scrollactiveItems.forEach((scrollactiveItem) => {
+        [].forEach.call(this.scrollactiveItems, (scrollactiveItem) => {
           scrollactiveItem.removeEventListener('click', this.scrollToTargetElement);
         });
       }
@@ -175,7 +176,7 @@ export default {
         window.removeEventListener('scroll', this.onScroll);
         window.cancelAnimationFrame(window.AFRequestID);
 
-        this.scrollactiveItems.forEach((scrollactiveItem) => {
+        [].forEach.call(this.scrollactiveItems, (scrollactiveItem) => {
           scrollactiveItem.classList.remove(this.activeClass);
         });
 
