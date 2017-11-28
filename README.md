@@ -38,7 +38,7 @@ You can follow whatever structure you wish, just make sure to set the `.scrollac
 Scrollactive will emmit an `itemchanged(event, currentItem, lastActiveItem)` event when an active menu item is changed to another, you can catch that event doing as the example below:
 
 ```html
-<scrollactive class="my-nav" v-on:itemchanged="yourFunction()">
+<scrollactive class="my-nav" v-on:itemchanged="yourFunction(event, currentItem, lastActiveItem)">
     <a href="#home" class="scrollactive-item">Home</a>
     <a href="#about-us" class="scrollactive-item">About Us</a>
     <a href="#portfolio" class="scrollactive-item">Portfolio</a>
