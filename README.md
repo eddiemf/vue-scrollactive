@@ -1,24 +1,27 @@
 # vue-scrollactive
-This vue 2 component makes it simple to highlight a menu item with an 'active' class as you scroll.
+This Vue 2 component makes it simple to highlight a menu item with an 'active' class as you scroll.
 
- - Highlights menu items as you scroll
+ - Highlights items with a class as you scroll
  - Scrolls to item's section on click
  - Customizable easing for scrolling on click
- - Vue2
+ - Emits events on class changes
  - Uses pure JS!
 
-Make sure to check the <a href="https://eddiemf.github.io/vue-scrollactive/examples/example-1.html">demo</a> and see all the available options!
+Make sure to check the <a href="https://eddiemf.github.io/vue-scrollactive/examples/example-1.html">demo</a> and see all the available options and play around with them!
 
 ## Installation
-Install via npm and use it as a vue plugin in your app.
+Install via `npm` and use it as a vue plugin in your app.
 
 ```bash
-npm install --save-dev vue-scrollactive
+npm install --save vue-scrollactive
 ```
 ```js
-var Scrollactive = require('vue-scrollactive');
-Vue.use(Scrollactive);
+var VueScrollactive = require('vue-scrollactive');
+Vue.use(VueScrollactive);
 ```
+
+Or if you wish to include it in a `script` tag, just include the `vue-scrollactive.min.js` file located in the `dist` folder as so:
+`<script src="dist/vue-scrollactive.min.js"></script>`
 
 ## Usage
 You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and add a `.scrollactive-item` class in your `<a>` tags as I show in the example below:
@@ -35,7 +38,7 @@ You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and
 You can follow whatever structure you wish, just make sure to set the `.scrollactive-item` class in the items you want to highlight and set its `href` with a valid ID that you would like to track while scrolling.
 
 ## Events
-Scrollactive will emmit an `itemchanged(event, currentItem, lastActiveItem)` event when an active menu item is changed to another, you can catch that event doing as the example below:
+Scrollactive will emit an `itemchanged(event, currentItem, lastActiveItem)` event when an active menu item is changed to another, you can catch that event doing as the example below:
 
 ```html
 <scrollactive class="my-nav" v-on:itemchanged="yourFunction(event, currentItem, lastActiveItem)">
@@ -47,7 +50,7 @@ Scrollactive will emmit an `itemchanged(event, currentItem, lastActiveItem)` eve
 ```
 
 ## Dynamic menu items
-vue-scrollactive continually watches with a smart observer for new `<a href="#some-hash" class="scrollactive-item">` elements to be added or existing one to be removed and attaches/removes the scroll listener to them.
+vue-scrollactive uses a smart observer to continually watch new elements being added or existing ones being removed, and attaches/removes the scroll listener to them, so you don't need to bother your self about refreshing whenever a new item is added/removed, just do what you need and vue-scrollactive will take care of itself :)
 
 ## Configuration
 All options should be passed as a prop in the `<scrollactive>` component as you can see in the example below:
