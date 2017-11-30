@@ -21,7 +21,10 @@ Vue.use(VueScrollactive);
 ```
 
 Or if you wish to include it in a `script` tag, just include the `vue-scrollactive.min.js` file located in the `dist` folder as so:
-`<script src="dist/vue-scrollactive.min.js"></script>`
+
+```html
+<script src="dist/vue-scrollactive.min.js"></script>
+```
 
 ## Usage
 You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and add a `.scrollactive-item` class in your `<a>` tags as I show in the example below:
