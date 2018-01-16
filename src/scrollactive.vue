@@ -101,10 +101,11 @@ export default {
   data() {
     return {
       observer: null,
-      scrollactiveItems: [],
-      bezierEasing,
+      items: [],
       currentItem: null,
       lastActiveItem: null,
+      scrollAnimationFrame: null,
+      bezierEasing,
     };
   },
 
@@ -146,7 +147,7 @@ export default {
 
   beforeDestroy() {
     window.removeEventListener('scroll', this.onScroll);
-    window.cancelAnimationFrame(window.AFRequestID);
+    window.cancelAnimationFrame(this.scrollAnimationFrame);
   },
 
   methods: {
@@ -172,16 +173,16 @@ export default {
     /**
      * Gets the scrollactive item that corresponds to the current section inside the window
      *
-     * @return {node} Scrollactive item node.
+     * @return {Element} Scrollactive item element.
      */
     getItemInsideWindow() {
       let currentItem;
 
-      [].forEach.call(this.scrollactiveItems, (node) => {
-        const target = document.getElementById(node.hash.substr(1));
+      [].forEach.call(this.items, (item) => {
+        const target = document.getElementById(item.hash.substr(1));
 
         if (window.pageYOffset >= this.getOffsetTop(target) - this.offset) {
-          currentItem = node;
+          currentItem = item;
         }
       });
 
@@ -193,17 +194,17 @@ export default {
     * clickToScroll prop.
     */
     initScrollactiveItems() {
-      this.scrollactiveItems = this.$el.querySelectorAll('.scrollactive-item');
+      this.items = this.$el.querySelectorAll('.scrollactive-item');
 
       if (this.clickToScroll) {
-        [].forEach.call(this.scrollactiveItems, (scrollactiveItem) => {
-          scrollactiveItem.addEventListener('click', this.scrollToTargetElement);
+        [].forEach.call(this.items, (item) => {
+          item.addEventListener('click', this.handleClick);
         });
         return;
       }
 
-      [].forEach.call(this.scrollactiveItems, (scrollactiveItem) => {
-        scrollactiveItem.removeEventListener('click', this.scrollToTargetElement);
+      [].forEach.call(this.items, (item) => {
+        item.removeEventListener('click', this.handleClick);
       });
     },
 
@@ -222,7 +223,7 @@ export default {
     *
     * @param {Object} event The click event.
     */
-    scrollToTargetElement(event) {
+    handleClick(event) {
       event.preventDefault();
 
       const { hash } = event.currentTarget;
@@ -240,60 +241,68 @@ export default {
        */
       if (!this.alwaysTrack) {
         window.removeEventListener('scroll', this.onScroll);
-        window.cancelAnimationFrame(window.AFRequestID);
+        window.cancelAnimationFrame(this.scrollAnimationFrame);
 
         this.removeActiveClass();
         event.currentTarget.classList.add(this.activeClass);
       }
 
-      const targetDistanceFromTop = this.getOffsetTop(target);
-      const startingY = window.pageYOffset;
-      const difference = targetDistanceFromTop - startingY;
-      const easing = this.bezierEasing(
-        this.cubicBezierArray[0],
-        this.cubicBezierArray[1],
-        this.cubicBezierArray[2],
-        this.cubicBezierArray[3],
-      );
-      let start = null;
-
-      const step = (timestamp) => {
-        if (!start) start = timestamp;
-
-        let progress = timestamp - start;
-        let progressPercentage = progress / this.duration;
-
-        if (progress >= this.duration) progress = this.duration;
-        if (progressPercentage >= 1) progressPercentage = 1;
-
-        const perTick = startingY + (easing(progressPercentage) * (difference - this.offset));
-
-        window.scrollTo(0, perTick);
-
-        if (progress < this.duration) {
-          window.AFRequestID = window.requestAnimationFrame(step);
-        } else {
-          window.addEventListener('scroll', this.onScroll);
-
-          if (this.modifyUrl) {
-            // Update the location hash after we've finished animating
-            if (window.history.pushState) {
-              window.history.pushState(null, null, hash);
-            } else {
-              window.location.hash = hash;
-            }
+      this.scrollTo(target).then(() => {
+        if (this.modifyUrl) {
+          // Update the location hash after we've finished animating
+          if (window.history.pushState) {
+            window.history.pushState(null, null, hash);
+          } else {
+            window.location.hash = hash;
           }
         }
-      };
+      });
+    },
 
-      window.requestAnimationFrame(step);
+    /**
+     * Scrolls the page to the given target element.
+     *
+     * @param  {Element} target DOM Element to scroll to.
+     * @return {Promise} Returns a promise that will resolve when the animation is done.
+     */
+    scrollTo(target) {
+      return new Promise((resolve) => {
+        const targetDistanceFromTop = this.getOffsetTop(target);
+        const startingY = window.pageYOffset;
+        const difference = targetDistanceFromTop - startingY;
+        const easing = this.bezierEasing(...this.cubicBezierArray);
+        let start = null;
+
+        const step = (timestamp) => {
+          if (!start) start = timestamp;
+
+          let progress = timestamp - start;
+          let progressPercentage = progress / this.duration;
+
+          if (progress >= this.duration) progress = this.duration;
+          if (progressPercentage >= 1) progressPercentage = 1;
+
+          const perTick = startingY + (easing(progressPercentage) * (difference - this.offset));
+
+          window.scrollTo(0, perTick);
+
+          if (progress < this.duration) {
+            this.scrollAnimationFrame = window.requestAnimationFrame(step);
+          } else {
+            window.addEventListener('scroll', this.onScroll);
+            resolve();
+          }
+        };
+
+        window.requestAnimationFrame(step);
+      });
     },
 
     /**
     * Gets the top offset position of an element in the document.
     *
     * @param  {Element} element
-    * @return {number}
+    * @return {Number}
     */
     getOffsetTop(element) {
       let yPosition = 0;
@@ -311,8 +320,8 @@ export default {
      * Removes the active class from all scrollactive items.
      */
     removeActiveClass() {
-      [].forEach.call(this.scrollactiveItems, (node) => {
-        node.classList.remove(this.activeClass);
+      [].forEach.call(this.items, (item) => {
+        item.classList.remove(this.activeClass);
       });
     },
   },
