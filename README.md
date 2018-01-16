@@ -31,10 +31,10 @@ You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and
 
 ```html
 <scrollactive class="my-nav">
-    <a href="#home" class="scrollactive-item">Home</a>
-    <a href="#about-us" class="scrollactive-item">About Us</a>
-    <a href="#portfolio" class="scrollactive-item">Portfolio</a>
-    <a href="#contact" class="scrollactive-item">Contact</a>
+  <a href="#home" class="scrollactive-item">Home</a>
+  <a href="#about-us" class="scrollactive-item">About Us</a>
+  <a href="#portfolio" class="scrollactive-item">Portfolio</a>
+  <a href="#contact" class="scrollactive-item">Contact</a>
 </scrollactive>
 ```
 
@@ -45,10 +45,10 @@ Scrollactive will emit an `itemchanged(event, currentItem, lastActiveItem)` even
 
 ```html
 <scrollactive class="my-nav" v-on:itemchanged="yourFunction(event, currentItem, lastActiveItem)">
-    <a href="#home" class="scrollactive-item">Home</a>
-    <a href="#about-us" class="scrollactive-item">About Us</a>
-    <a href="#portfolio" class="scrollactive-item">Portfolio</a>
-    <a href="#contact" class="scrollactive-item">Contact</a>
+  <a href="#home" class="scrollactive-item">Home</a>
+  <a href="#about-us" class="scrollactive-item">About Us</a>
+  <a href="#portfolio" class="scrollactive-item">Portfolio</a>
+  <a href="#contact" class="scrollactive-item">Contact</a>
 </scrollactive>
 ```
 
@@ -59,10 +59,11 @@ vue-scrollactive uses a smart observer to continually watch new elements being a
 All options should be passed as a prop in the `<scrollactive>` component as you can see in the example below:
 ``` html
 <scrollactive
-	active-class="active"
-	:offset="80"
-	:duration="800"
-	bezier-easing-value=".5,0,.35,1">
+  active-class="active"
+  :offset="80"
+  :duration="800"
+  bezier-easing-value=".5,0,.35,1"
+>
 </scrollactive>
 ```
 Remember that all options are optional and you can see the default values in the Options sections.
@@ -76,8 +77,8 @@ Remember that all options are optional and you can see the default values in the
  * @type {String}
  */
 activeClass: {
-	type: String,
-	default: 'is-active'
+  type: String,
+  default: 'is-active'
 },
 
 /**
@@ -88,8 +89,8 @@ activeClass: {
  * @type {Number}
  */
 offset: {
-	type: Number,
-	default: 20
+  type: Number,
+  default: 20
 },
 
 /**
@@ -100,8 +101,8 @@ offset: {
  * @type {Boolean}
  */
 clickToScroll: {
-	type: Boolean,
-	default: true
+  type: Boolean,
+  default: true
 },
 
 /**
@@ -112,8 +113,8 @@ clickToScroll: {
  * @type {Number}
  */
 duration: {
-	type: Number,
-	default: 600
+  type: Number,
+  default: 600
 },
 
 /**
@@ -128,8 +129,8 @@ duration: {
  * @type {Boolean}
  */
 alwaysTrack: {
-	type: Boolean,
-	default: false
+  type: Boolean,
+  default: false
 },
 
 /**
@@ -141,8 +142,8 @@ alwaysTrack: {
  * @type {String}
  */
 bezierEasingValue: {
-	type: String,
-	default: '.5,0,.35,1'
+  type: String,
+  default: '.5,0,.35,1'
 }
 
 /**
