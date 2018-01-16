@@ -84,6 +84,18 @@ export default {
       type: String,
       default: '.5,0,.35,1',
     },
+
+    /**
+     * Decides if the URL should be modified with the section id when
+     * clicking a scrollactive item.
+     *
+     * @default true
+     * @type {Boolean}
+     */
+    modifyUrl: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   data() {
@@ -262,11 +274,14 @@ export default {
           window.AFRequestID = window.requestAnimationFrame(step);
         } else {
           window.addEventListener('scroll', this.onScroll);
-          // Update the location hash after we've finished animating
-          if (window.history.pushState) {
-            window.history.pushState(null, null, hash);
-          } else {
-            window.location.hash = hash;
+
+          if (this.modifyUrl) {
+            // Update the location hash after we've finished animating
+            if (window.history.pushState) {
+              window.history.pushState(null, null, hash);
+            } else {
+              window.location.hash = hash;
+            }
           }
         }
       };
