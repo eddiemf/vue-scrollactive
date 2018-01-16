@@ -144,4 +144,16 @@ bezierEasingValue: {
 	type: String,
 	default: '.5,0,.35,1'
 }
+
+/**
+ * Decides if the URL should be modified with the section id when
+ * clicking a scrollactive item.
+ *
+ * @default true
+ * @type {Boolean}
+ */
+modifyUrl: {
+  type: Boolean,
+  default: true,
+},
 ```
