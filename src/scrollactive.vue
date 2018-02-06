@@ -96,6 +96,20 @@ export default {
       type: Boolean,
       default: true,
     },
+
+    /**
+     * If true the active class will only be applied when a section matches exactly one of the
+     * scrollactive items, meaning it will be highlighted when scrolling exactly inside the section.
+     * If false (default) it will always highlight the last item which was matched in a section,
+     * even if it is already outside that section (and not inside another that's being tracked).
+     *
+     * @default false
+     * @type {Boolean}
+     */
+    exact: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
@@ -180,10 +194,12 @@ export default {
 
       [].forEach.call(this.items, (item) => {
         const target = document.getElementById(item.hash.substr(1));
+        const isScreenPastSection = window.pageYOffset >= this.getOffsetTop(target) - this.offset;
+        const isScreenBeforeSectionEnd = window.pageYOffset <
+          (this.getOffsetTop(target) - this.offset) + target.offsetHeight;
 
-        if (window.pageYOffset >= this.getOffsetTop(target) - this.offset) {
-          currentItem = item;
-        }
+        if (this.exact && isScreenPastSection && isScreenBeforeSectionEnd) currentItem = item;
+        if (!this.exact && isScreenPastSection) currentItem = item;
       });
 
       return currentItem;
