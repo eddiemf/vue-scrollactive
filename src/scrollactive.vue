@@ -194,6 +194,7 @@ export default {
 
       [].forEach.call(this.items, (item) => {
         const target = document.getElementById(item.hash.substr(1));
+        if (!target) return;
         const isScreenPastSection = window.pageYOffset >= this.getOffsetTop(target) - this.offset;
         const isScreenBeforeSectionEnd = window.pageYOffset <
           (this.getOffsetTop(target) - this.offset) + target.offsetHeight;
