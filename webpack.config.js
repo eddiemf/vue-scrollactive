@@ -1,18 +1,17 @@
 const path = require('path');
-const webpack = require('webpack');
-
-const PROD = (process.env.NODE_ENV === 'production');
+const { VueLoaderPlugin } = require('vue-loader');
 
 module.exports = {
-  entry: {
-    'vue-scrollactive.js': './src/index.js',
-    'vue-scrollactive.min.js': './src/index.js',
-  },
+  entry: ['./src/index.js'],
   output: {
-    filename: '[name]',
+    filename: 'vue-scrollactive.min.js',
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    library: ['vue-scrollactive'],
+    library: {
+      root: 'vueScrollactive',
+      amd: 'vue-scrollactive',
+      commonjs: 'vue-scrollactive',
+    },
     libraryTarget: 'umd',
   },
   module: {
@@ -20,22 +19,13 @@ module.exports = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+        use: ['babel-loader', 'eslint-loader'],
       },
       {
         test: /\.vue$/,
-        use: {
-          loader: 'vue-loader',
-        },
+        use: ['vue-loader', 'eslint-loader'],
       },
     ],
   },
-  plugins: PROD ? [
-    new webpack.optimize.UglifyJsPlugin({
-      include: /\.min\.js$/,
-      minimize: true,
-    }),
-  ] : [],
+  plugins: [new VueLoaderPlugin()],
 };

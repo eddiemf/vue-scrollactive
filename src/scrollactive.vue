@@ -196,8 +196,8 @@ export default {
         const target = document.getElementById(item.hash.substr(1));
         if (!target) return;
         const isScreenPastSection = window.pageYOffset >= this.getOffsetTop(target) - this.offset;
-        const isScreenBeforeSectionEnd = window.pageYOffset <
-          (this.getOffsetTop(target) - this.offset) + target.offsetHeight;
+        const isScreenBeforeSectionEnd = window.pageYOffset
+          < (this.getOffsetTop(target) - this.offset) + target.offsetHeight;
 
         if (this.exact && isScreenPastSection && isScreenBeforeSectionEnd) currentItem = item;
         if (!this.exact && isScreenPastSection) currentItem = item;
