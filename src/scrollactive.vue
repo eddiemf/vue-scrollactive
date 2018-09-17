@@ -33,6 +33,18 @@ export default {
     },
 
     /**
+     * The selector string of the scroll container element you'd like to use. It defaults to the
+     * window object (most common), but you might want to change in case you're using an element
+     * as the overflow container.
+     *
+     * @type {String}
+     */
+    scrollContainerSelector: {
+      type: String,
+      default: '',
+    },
+
+    /**
      * Enables/disables the scrolling when clicking in a menu item.
      * Disable if you'd like to handle the scrolling by your own.
      *
@@ -132,6 +144,14 @@ export default {
     cubicBezierArray() {
       return this.bezierEasingValue.split(',');
     },
+
+    scrollContainer() {
+      if (this.scrollContainerSelector) {
+        return document.querySelector(this.scrollContainerSelector);
+      }
+
+      return window;
+    },
   },
 
   mounted() {
@@ -152,7 +172,7 @@ export default {
 
     if (this.currentItem) this.currentItem.classList.add(this.activeClass);
 
-    window.addEventListener('scroll', this.onScroll);
+    this.scrollContainer.addEventListener('scroll', this.onScroll);
   },
 
   updated() {
@@ -160,7 +180,7 @@ export default {
   },
 
   beforeDestroy() {
-    window.removeEventListener('scroll', this.onScroll);
+    this.scrollContainer.removeEventListener('scroll', this.onScroll);
     window.cancelAnimationFrame(this.scrollAnimationFrame);
   },
 
@@ -192,13 +212,15 @@ export default {
     getItemInsideWindow() {
       let currentItem;
 
+      // Must be called with 'call' to prevent bugs on some devices
       [].forEach.call(this.items, (item) => {
         const target = document.getElementById(item.hash.substr(1));
 
         if (!target) return;
 
-        const isScreenPastSection = window.pageYOffset >= this.getOffsetTop(target) - this.offset;
-        const isScreenBeforeSectionEnd = window.pageYOffset
+        const distanceFromTop = this.scrollContainer.scrollTop || window.pageYOffset;
+        const isScreenPastSection = distanceFromTop >= this.getOffsetTop(target) - this.offset;
+        const isScreenBeforeSectionEnd = distanceFromTop
           < (this.getOffsetTop(target) - this.offset) + target.offsetHeight;
 
         if (this.exact && isScreenPastSection && isScreenBeforeSectionEnd) currentItem = item;
@@ -217,6 +239,7 @@ export default {
       this.items = this.$el.querySelectorAll('.scrollactive-item');
 
       if (this.clickToScroll) {
+        // Must be called with 'call' to prevent bugs on some devices
         [].forEach.call(this.items, (item) => {
           item.addEventListener('click', this.handleClick);
         });
@@ -224,6 +247,7 @@ export default {
         return;
       }
 
+      // Must be called with 'call' to prevent bugs on some devices
       [].forEach.call(this.items, (item) => {
         item.removeEventListener('click', this.handleClick);
       });
@@ -262,7 +286,7 @@ export default {
        *  is scrolling.
        */
       if (!this.alwaysTrack) {
-        window.removeEventListener('scroll', this.onScroll);
+        this.scrollContainer.removeEventListener('scroll', this.onScroll);
         window.cancelAnimationFrame(this.scrollAnimationFrame);
 
         this.removeActiveClass();
@@ -291,7 +315,7 @@ export default {
     scrollTo(target) {
       return new Promise((resolve) => {
         const targetDistanceFromTop = this.getOffsetTop(target);
-        const startingY = window.pageYOffset;
+        const startingY = this.scrollContainer.scrollTop || window.pageYOffset;
         const difference = targetDistanceFromTop - startingY;
         const easing = this.bezierEasing(...this.cubicBezierArray);
         let start = null;
@@ -307,12 +331,12 @@ export default {
 
           const perTick = startingY + (easing(progressPercentage) * (difference - this.offset));
 
-          window.scrollTo(0, perTick);
+          this.scrollContainer.scrollTo(0, perTick);
 
           if (progress < this.duration) {
             this.scrollAnimationFrame = window.requestAnimationFrame(step);
           } else {
-            window.addEventListener('scroll', this.onScroll);
+            this.scrollContainer.addEventListener('scroll', this.onScroll);
             resolve();
           }
         };
@@ -336,6 +360,10 @@ export default {
         nextElement = nextElement.offsetParent;
       }
 
+      if (this.scrollContainer) {
+        return yPosition - this.scrollContainer.offsetTop;
+      }
+
       return yPosition;
     },
 
@@ -343,6 +371,7 @@ export default {
      * Removes the active class from all scrollactive items.
      */
     removeActiveClass() {
+      // Must be called with 'call' to prevent bugs on some devices
       [].forEach.call(this.items, (item) => {
         item.classList.remove(this.activeClass);
       });

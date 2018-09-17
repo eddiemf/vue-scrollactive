@@ -5,7 +5,6 @@ This Vue 2 component makes it simple to highlight a menu item with an 'active' c
  - Scrolls to item's section on click
  - Customizable easing for scrolling on click
  - Emits events on class changes
- - Uses pure JS!
 
 Make sure to check the <a href="https://eddiemf.github.io/vue-scrollactive/examples/example-1.html">demo</a> and see all the available options and play around with them!
 
@@ -63,9 +62,6 @@ methods: {
 // ...
 ```
 
-## Dynamic menu items
-vue-scrollactive uses a smart observer to continually watch new elements being added or existing ones being removed, and attaches/removes the scroll listener to them, so you don't need to bother your self about refreshing whenever a new item is added/removed, just do what you need and vue-scrollactive will take care of itself :)
-
 ## Configuration
 All options should be passed as a prop in the `<scrollactive>` component as you can see in the example below:
 ``` html
@@ -84,12 +80,12 @@ Remember that all options are optional and you can see the default values in the
 /**
  * Class that will be applied in the menu item.
  *
- * @default  'is-active'
+ * @default 'is-active'
  * @type {String}
  */
 activeClass: {
   type: String,
-  default: 'is-active'
+  default: 'is-active',
 },
 
 /**
@@ -101,7 +97,19 @@ activeClass: {
  */
 offset: {
   type: Number,
-  default: 20
+  default: 20,
+},
+
+/**
+ * The selector string of the scroll container element you'd like to use. It defaults to the
+ * window object (most common), but you might want to change in case you're using an element
+ * as the overflow container.
+ *
+ * @type {String}
+ */
+scrollContainerSelector: {
+  type: String,
+  default: '',
 },
 
 /**
@@ -113,11 +121,11 @@ offset: {
  */
 clickToScroll: {
   type: Boolean,
-  default: true
+  default: true,
 },
 
 /**
- * The duration (milliseconds) of the scroll animation when clicking to scroll
+ * The duration of the scroll animation when clicking to scroll
  * is activated.
  *
  * @default 600
@@ -125,7 +133,7 @@ clickToScroll: {
  */
 duration: {
   type: Number,
-  default: 600
+  default: 600,
 },
 
 /**
@@ -141,7 +149,7 @@ duration: {
  */
 alwaysTrack: {
   type: Boolean,
-  default: false
+  default: false,
 },
 
 /**
@@ -154,8 +162,8 @@ alwaysTrack: {
  */
 bezierEasingValue: {
   type: String,
-  default: '.5,0,.35,1'
-}
+  default: '.5,0,.35,1',
+},
 
 /**
  * Decides if the URL should be modified with the section id when
