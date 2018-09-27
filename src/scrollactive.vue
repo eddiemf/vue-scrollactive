@@ -146,11 +146,13 @@ export default {
     },
 
     scrollContainer() {
+      let container = window;
+
       if (this.scrollContainerSelector) {
-        return document.querySelector(this.scrollContainerSelector);
+        container = document.querySelector(this.scrollContainerSelector) || window;
       }
 
-      return window;
+      return container;
     },
   },
 
@@ -360,8 +362,8 @@ export default {
         nextElement = nextElement.offsetParent;
       }
 
-      if (this.scrollContainer) {
-        return yPosition - this.scrollContainer.offsetTop;
+      if (this.scrollContainer.offsetTop) {
+        yPosition -= this.scrollContainer.offsetTop;
       }
 
       return yPosition;
