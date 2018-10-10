@@ -5,6 +5,7 @@ module.exports = {
   entry: ['./src/index.js'],
   output: {
     filename: 'vue-scrollactive.min.js',
+    globalObject: 'typeof self !== \'undefined\' ? self : this',
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
     library: {
