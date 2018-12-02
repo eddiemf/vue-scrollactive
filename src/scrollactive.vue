@@ -300,7 +300,7 @@
         event.preventDefault();
 
         const { hash } = event.currentTarget;
-        const target = document.getElementById(hash.substr(1));
+        const target = document.getElementById(decodeURI(hash.substr(1)));
 
         if (!target) {
           console.warn(`[vue-scrollactive] Element '${hash}' was not found. Make sure it is set in the DOM.`);
