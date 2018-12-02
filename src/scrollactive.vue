@@ -323,17 +323,19 @@
 
         this.scrollTo(target)
           .then(() => {
-            if (!this.modifyUrl) return;
-
-            this.pushHashToUrl(hash);
-
             if (!this.alwaysTrack) {
-              this.currentItem = this.getItemInsideWindow();
+              this.scrollContainer.addEventListener('scroll', this.onScroll);
+              const findClickedItem = item => decodeURI(item.hash.substr(1)) === target.id;
+              this.currentItem = [].find.call(this.items, findClickedItem);
 
               if (this.currentItem !== this.lastActiveItem) {
                 this.$emit('itemchanged', null, this.currentItem, this.lastActiveItem);
                 this.lastActiveItem = this.currentItem;
               }
+            }
+
+            if (this.modifyUrl) {
+              this.pushHashToUrl(hash);
             }
           });
       },
@@ -368,10 +370,6 @@
             if (progress < this.duration) {
               this.scrollAnimationFrame = window.requestAnimationFrame(step);
             } else {
-              if (!this.alwaysTrack) {
-                this.scrollContainer.addEventListener('scroll', this.onScroll);
-              }
-
               resolve();
             }
           };
