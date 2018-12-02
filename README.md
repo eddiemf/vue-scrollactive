@@ -192,4 +192,24 @@ exact: {
   type: Boolean,
   default: false,
 },
+
+/**
+ * If true the active class will be applied to the first scrollactive-item before you scroll
+ * past it (even if you didn't reach it yet).
+ */
+highlightFirstItem: {
+  type: Boolean,
+  default: false,
+},
+
+/**
+ * Change the scroll active component html tag.
+ *
+ * @default nav
+ * @type {String}
+ */
+tag: {
+  type: String,
+  default: 'nav',
+},
 ```

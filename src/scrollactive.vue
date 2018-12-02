@@ -134,6 +134,7 @@
 
       /**
        * Change the scroll active component html tag.
+       *
        * @default nav
        * @type {String}
        */
