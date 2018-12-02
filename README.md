@@ -91,8 +91,8 @@ activeClass: {
 },
 
 /**
- * Amount of space between top of screen and the section to
- * highlight. (Usually your fixed header's height)
+ * Amount of space between top of screen and the section to highlight. (Usually your fixed
+ * header's height)
  *
  * @default 20
  * @type {Number}
@@ -100,6 +100,17 @@ activeClass: {
 offset: {
   type: Number,
   default: 20,
+},
+
+/**
+ * Amount of space between the top of the screen and the section to highlight when clicking a
+ * scrollactive item to scroll. It will use the value of the `offset` prop if none is provided
+ * here. Usefull when you want to use the `offset` prop to make an item be active as soon as
+ * it shows on the screen but still scroll to the top of the section when clicking the item.
+ */
+scrollOffset: {
+  type: Number,
+  default: null,
 },
 
 /**
@@ -127,8 +138,7 @@ clickToScroll: {
 },
 
 /**
- * The duration of the scroll animation when clicking to scroll
- * is activated.
+ * The duration of the scroll animation when clicking to scroll is activated.
  *
  * @default 600
  * @type {Number}
@@ -139,12 +149,10 @@ duration: {
 },
 
 /**
- * Defines if the plugin should track the section change when
- * clicking an item to scroll to its section. If set to true,
- * it will always keep track and change the active class to the
- * current section while scrolling, if false, the active class
- * will be immediately applied to the clicked menu item, ignoring
- * the passed sections until the scrolling is over.
+ * Defines if the plugin should track the section change when clicking an item to scroll to
+ * its section. If set to true, it will always keep track and change the active class to the
+ * current section while scrolling, if false, the active class will be immediately applied to
+ * the clicked menu item, ignoring the passed sections until the scrolling is over.
  *
  * @default false
  * @type {Boolean}
@@ -156,8 +164,7 @@ alwaysTrack: {
 
 /**
  * Your custom easing value for the click to scroll functionality.
- * It must be a string with 4 values separated by commas in a
- * cubic bezier format.
+ * It must be a string with 4 values separated by commas in a cubic bezier format.
  *
  * @default '.5,0,.35,1'
  * @type {String}
@@ -168,8 +175,8 @@ bezierEasingValue: {
 },
 
 /**
- * Decides if the URL should be modified with the section id when
- * clicking a scrollactive item.
+ * Decides if the URL should be modified with the section id when clicking a scrollactive
+ * item.
  *
  * @default true
  * @type {Boolean}
@@ -181,9 +188,10 @@ modifyUrl: {
 
 /**
  * If true the active class will only be applied when a section matches exactly one of the
- * scrollactive items, meaning it will be highlighted when scrolling exactly inside the section.
- * If false (default) it will always highlight the last item which was matched in a section,
- * even if it is already outside that section (and not inside another that's being tracked).
+ * scrollactive items, meaning it will be highlighted when scrolling exactly inside the
+ * section. If false (default) it will always highlight the last item which was matched
+ * in a section, even if it is already outside that section (and not inside another that's
+ * being tracked).
  *
  * @default false
  * @type {Boolean}
