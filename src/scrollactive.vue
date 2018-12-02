@@ -194,6 +194,7 @@
 
       if (this.currentItem) this.currentItem.classList.add(this.activeClass);
 
+      this.scrollToHashElement();
       this.scrollContainer.addEventListener('scroll', this.onScroll);
     },
 
@@ -324,13 +325,7 @@
           .then(() => {
             if (!this.modifyUrl) return;
 
-            if (window.history.pushState) {
-              window.history.pushState(null, null, hash);
-
-              return;
-            }
-
-            window.location.hash = hash;
+            this.pushHashToUrl(hash);
           });
       },
 
@@ -403,6 +398,44 @@
         [].forEach.call(this.items, (item) => {
           item.classList.remove(this.activeClass);
         });
+      },
+
+      /**
+       * Scrolls the page to the element passed as a hash in URL, preventing weird native scroll
+       * jumps while maintaining the hash in the URL.
+       */
+      scrollToHashElement() {
+        const { hash } = window.location;
+        if (!hash) return;
+
+        const hashElement = document.querySelector(hash);
+        if (!hashElement) return;
+
+        window.location.hash = ''; // Clears the hash to prevent scroll from jumping
+
+        setTimeout(() => {
+          const yPos = hashElement.offsetTop - this.offset;
+
+          this.scrollContainer.scrollTo(0, yPos);
+          // Sets the hash back with pushState so it won't jump to the element ignoring the offset
+          this.pushHashToUrl(hash);
+        }, 0);
+      },
+
+      /**
+       * Pushes the given hash to the URL using primarily pushState if available to prevent the
+       * scroll from jumping to the hash element. Uses window.location.hash as a fallback.
+       *
+       * @param {String} hash The hash value to be pushed
+       */
+      pushHashToUrl(hash) {
+        if (window.history.pushState) {
+          window.history.pushState(null, null, hash);
+
+          return;
+        }
+
+        window.location.hash = hash;
       },
     },
   };
