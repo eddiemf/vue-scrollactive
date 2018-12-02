@@ -238,7 +238,7 @@
         // Must be called with 'call' to prevent bugs on some devices
         [].forEach.call(this.items, (item) => {
           const isFirstItem = (item === this.items[0]);
-          const target = document.getElementById(item.hash.substr(1));
+          const target = document.getElementById(decodeURI(item.hash.substr(1)));
 
           if (!target) return;
 
@@ -326,6 +326,15 @@
             if (!this.modifyUrl) return;
 
             this.pushHashToUrl(hash);
+
+            if (!this.alwaysTrack) {
+              this.currentItem = this.getItemInsideWindow();
+
+              if (this.currentItem !== this.lastActiveItem) {
+                this.$emit('itemchanged', null, this.currentItem, this.lastActiveItem);
+                this.lastActiveItem = this.currentItem;
+              }
+            }
           });
       },
 
@@ -359,7 +368,10 @@
             if (progress < this.duration) {
               this.scrollAnimationFrame = window.requestAnimationFrame(step);
             } else {
-              this.scrollContainer.addEventListener('scroll', this.onScroll);
+              if (!this.alwaysTrack) {
+                this.scrollContainer.addEventListener('scroll', this.onScroll);
+              }
+
               resolve();
             }
           };
@@ -408,7 +420,7 @@
         const { hash } = window.location;
         if (!hash) return;
 
-        const hashElement = document.querySelector(hash);
+        const hashElement = document.querySelector(decodeURI(hash));
         if (!hashElement) return;
 
         window.location.hash = ''; // Clears the hash to prevent scroll from jumping
