@@ -124,6 +124,15 @@
       },
 
       /**
+       * If true the active class will be applied to the first scrollactive-item before you scroll
+       * past it (even if you didn't reach it yet).
+       */
+      highlightFirstItem: {
+        type: Boolean,
+        default: false,
+      },
+
+      /**
        * Change the scroll active component html tag.
        * @default nav
        * @type {String}
@@ -226,6 +235,7 @@
 
         // Must be called with 'call' to prevent bugs on some devices
         [].forEach.call(this.items, (item) => {
+          const isFirstItem = (item === this.items[0]);
           const target = document.getElementById(item.hash.substr(1));
 
           if (!target) return;
@@ -234,6 +244,10 @@
           const isScreenPastSection = distanceFromTop >= this.getOffsetTop(target) - this.offset;
           const isScreenBeforeSectionEnd = distanceFromTop
             < (this.getOffsetTop(target) - this.offset) + target.offsetHeight;
+
+          if (isFirstItem && this.highlightFirstItem) {
+            if (isScreenBeforeSectionEnd) currentItem = item;
+          }
 
           if (this.exact && isScreenPastSection && isScreenBeforeSectionEnd) currentItem = item;
           if (!this.exact && isScreenPastSection) currentItem = item;
