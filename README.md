@@ -25,6 +25,8 @@ Or if you wish to include it in a `script` tag, just include the `vue-scrollacti
 <script src="dist/vue-scrollactive.min.js"></script>
 ```
 
+If you're not running any transpiler like babel, you'll most likely need to install a Promise polyfill to support older browsers since this library depends on promises to work.
+
 ## Usage
 You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and add a `.scrollactive-item` class in your `<a>` tags as I show in the example below:
 
