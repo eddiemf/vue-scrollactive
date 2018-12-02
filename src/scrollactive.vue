@@ -68,8 +68,7 @@
       },
 
       /**
-       * The duration of the scroll animation when clicking to scroll
-       * is activated.
+       * The duration of the scroll animation when clicking to scroll is activated.
        *
        * @default 600
        * @type {Number}
@@ -80,12 +79,10 @@
       },
 
       /**
-       * Defines if the plugin should track the section change when
-       * clicking an item to scroll to its section. If set to true,
-       * it will always keep track and change the active class to the
-       * current section while scrolling, if false, the active class
-       * will be immediately applied to the clicked menu item, ignoring
-       * the passed sections until the scrolling is over.
+       * Defines if the plugin should track the section change when clicking an item to scroll to
+       * its section. If set to true, it will always keep track and change the active class to the
+       * current section while scrolling, if false, the active class will be immediately applied to
+       * the clicked menu item, ignoring the passed sections until the scrolling is over.
        *
        * @default false
        * @type {Boolean}
@@ -97,8 +94,7 @@
 
       /**
        * Your custom easing value for the click to scroll functionality.
-       * It must be a string with 4 values separated by commas in a
-       * cubic bezier format.
+       * It must be a string with 4 values separated by commas in a cubic bezier format.
        *
        * @default '.5,0,.35,1'
        * @type {String}
@@ -109,8 +105,8 @@
       },
 
       /**
-       * Decides if the URL should be modified with the section id when
-       * clicking a scrollactive item.
+       * Decides if the URL should be modified with the section id when clicking a scrollactive
+       * item.
        *
        * @default true
        * @type {Boolean}
@@ -122,9 +118,10 @@
 
       /**
        * If true the active class will only be applied when a section matches exactly one of the
-       * scrollactive items, meaning it will be highlighted when scrolling exactly inside the section.
-       * If false (default) it will always highlight the last item which was matched in a section,
-       * even if it is already outside that section (and not inside another that's being tracked).
+       * scrollactive items, meaning it will be highlighted when scrolling exactly inside the
+       * section. If false (default) it will always highlight the last item which was matched
+       * in a section, even if it is already outside that section (and not inside another that's
+       * being tracked).
        *
        * @default false
        * @type {Boolean}
