@@ -1,11 +1,16 @@
 {
   "root": true,
-  "extends": "airbnb-base",
-  "plugins": ["html"],
+  "extends": [
+    "plugin:vue/essential",
+    "airbnb-base"
+  ],
+  "plugins": ["html", "vue"],
   "env": {
     "browser": true
   },
-  "parser": "babel-eslint",
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
   "rules": {
     "no-console": "off"
   }
