@@ -150,6 +150,17 @@
         type: String,
         default: 'nav',
       },
+
+      /**
+      * Scroll to the anchor present if the current URL when the component is mounted.
+      *
+      * @default true
+      * @type {Boolean}
+      */
+      scrollOnStart: {
+        type: Boolean,
+        default: true,
+      },
     },
 
     data() {
@@ -202,7 +213,7 @@
 
       if (this.currentItem) this.currentItem.classList.add(this.activeClass);
 
-      this.scrollToHashElement();
+      if (this.scrollOnStart) this.scrollToHashElement();
       this.scrollContainer.addEventListener('scroll', this.onScroll);
     },
 
