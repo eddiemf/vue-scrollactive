@@ -152,11 +152,12 @@
       },
 
       /**
-      * Scroll to the anchor present if the current URL when the component is mounted.
-      *
-      * @default true
-      * @type {Boolean}
-      */
+       * If true the screen will be scrolled to the element present in the URL when the component
+       * is mounted.
+       *
+       * @default true
+       * @type {Boolean}
+       */
       scrollOnStart: {
         type: Boolean,
         default: true,
