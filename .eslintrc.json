@@ -1,12 +1,13 @@
 {
-  "root": true,
-  "extends": "airbnb-base",
-  "plugins": ["html"],
-  "env": {
-    "browser": true
+  "extends": ["eslint:recommended"],
+  "parserOptions": {
+    "sourceType": "module"
   },
-  "parser": "babel-eslint",
-  "rules": {
-    "no-console": "off"
+  "env": {
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "Vue": "readonly"
   }
 }

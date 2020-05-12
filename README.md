@@ -1,33 +1,46 @@
 # vue-scrollactive
-This Vue 2 component makes it simple to highlight a menu item with an 'active' class as you scroll.
 
- - Highlights items with a class as you scroll
- - Scrolls to item's section on click
- - Customizable easing for scrolling on click
- - Emits events on class changes
+This component makes it simple to highlight a menu item with an 'active' class as you scroll.
 
-Make sure to check the <a href="https://eddiemf.github.io/vue-scrollactive/examples/example-1.html">demo</a> and see all the available options and play around with them!
+- Highlights items with a class as you scroll
+- Scrolls to item's section on click
+- Configurable easing scroll effect
+- Emits events for full control
+
+Make sure to check the [demo](https://eddiemf.github.io/vue-scrollactive/examples/example-1.html) where you can play around with every option.
 
 ## Installation
-Install via `npm` and use it as a vue plugin in your app.
+
+Install the dependency using `yarn`
+
+```bash
+yarn add vue-scrollactive
+```
+
+or `npm`
 
 ```bash
 npm install --save vue-scrollactive
 ```
+
+then install the plugin
+
 ```js
-var VueScrollactive = require('vue-scrollactive');
+import VueScrollactive from 'vue-scrollactive';
+
 Vue.use(VueScrollactive);
 ```
 
-Or if you wish to include it in a `script` tag, just include the `vue-scrollactive.min.js` file located in the `dist` folder as so:
+Or if you wish to include it in a `script` tag, just download the source code from the latest release [here](https://github.com/eddiemf/vue-scrollactive/releases/latest) and include the `vue-scrollactive.min.js` file located in the `dist` folder in your page as a script:
 
 ```html
 <script src="dist/vue-scrollactive.min.js"></script>
 ```
 
-If you're not running any transpiler like babel, you'll most likely need to install a Promise polyfill to support older browsers since this library depends on promises to work.
+If you're not running any transpiler like babel, you'll most likely need to install a Promise polyfill such as [this](https://github.com/taylorhakes/promise-polyfill) to support older browsers since this library depends on promises to work.
 
 ## Usage
+
 You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and add a `.scrollactive-item` class in your `<a>` tags as I show in the example below:
 
 ```html
@@ -39,10 +52,11 @@ You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and
 </scrollactive>
 ```
 
-You can follow whatever structure you wish, just make sure to set the `.scrollactive-item` class in the items you want to highlight and set its `href` with a valid ID that you would like to track while scrolling.
+You can follow whatever structure you wish, just make sure to set the `.scrollactive-item` class in the items you want to highlight and set its `href` with a valid element ID that you would like to track while scrolling.
 
 ## Events
-Scrollactive will emit an `itemchanged(event, currentItem, lastActiveItem)` event when an active menu item is changed to another, you can catch that event doing as the example below:
+
+Scrollactive will emit an `itemchanged(event, currentItem, lastActiveItem)` event when an active menu item is changed to another. You can catch that event doing as the example below:
 
 ```html
 <scrollactive class="my-nav" v-on:itemchanged="onItemChanged">
@@ -53,37 +67,32 @@ Scrollactive will emit an `itemchanged(event, currentItem, lastActiveItem)` even
 </scrollactive>
 ```
 
-
 ```javascript
 // ...
 methods: {
   onItemChanged(event, currentItem, lastActiveItem) {
-    // your logic
+    // here you have access to everything you need regarding that event
   },
 },
 // ...
 ```
 
 ## Configuration
+
 All options should be passed as a prop in the `<scrollactive>` component as you can see in the example below:
-``` html
-<scrollactive
-  active-class="active"
-  :offset="80"
-  :duration="800"
-  bezier-easing-value=".5,0,.35,1"
->
+
+```html
+<scrollactive active-class="active" :offset="80" :duration="800" bezier-easing-value=".5,0,.35,1">
 </scrollactive>
 ```
-Remember that all options are optional and you can see the default values in the Options sections.
+
+Remember that all options are optional and you can check the default values below:
 
 ### Options
-``` javascript
+
+```javascript
 /**
- * Class that will be applied in the menu item.
- *
- * @default 'is-active'
- * @type {String}
+ * Active class that will be applied to the active item.
  */
 activeClass: {
   type: String,
@@ -92,10 +101,7 @@ activeClass: {
 
 /**
  * Amount of space between top of screen and the section to highlight. (Usually your fixed
- * header's height)
- *
- * @default 20
- * @type {Number}
+ * header's height).
  */
 offset: {
   type: Number,
@@ -105,7 +111,7 @@ offset: {
 /**
  * Amount of space between the top of the screen and the section to highlight when clicking a
  * scrollactive item to scroll. It will use the value of the `offset` prop if none is provided
- * here. Usefull when you want to use the `offset` prop to make an item be active as soon as
+ * here. Useful when you want to use the `offset` prop to make an item be active as soon as
  * it shows on the screen but still scroll to the top of the section when clicking the item.
  */
 scrollOffset: {
@@ -116,9 +122,7 @@ scrollOffset: {
 /**
  * The selector string of the scroll container element you'd like to use. It defaults to the
  * window object (most common), but you might want to change in case you're using an element
- * as the overflow container.
- *
- * @type {String}
+ * as container with overflow.
  */
 scrollContainerSelector: {
   type: String,
@@ -128,9 +132,6 @@ scrollContainerSelector: {
 /**
  * Enables/disables the scrolling when clicking in a menu item.
  * Disable if you'd like to handle the scrolling by your own.
- *
- * @default true
- * @type {Boolean}
  */
 clickToScroll: {
   type: Boolean,
@@ -139,9 +140,6 @@ clickToScroll: {
 
 /**
  * The duration of the scroll animation when clicking to scroll is activated.
- *
- * @default 600
- * @type {Number}
  */
 duration: {
   type: Number,
@@ -153,9 +151,6 @@ duration: {
  * its section. If set to true, it will always keep track and change the active class to the
  * current section while scrolling, if false, the active class will be immediately applied to
  * the clicked menu item, ignoring the passed sections until the scrolling is over.
- *
- * @default false
- * @type {Boolean}
  */
 alwaysTrack: {
   type: Boolean,
@@ -165,9 +160,6 @@ alwaysTrack: {
 /**
  * Your custom easing value for the click to scroll functionality.
  * It must be a string with 4 values separated by commas in a cubic bezier format.
- *
- * @default '.5,0,.35,1'
- * @type {String}
  */
 bezierEasingValue: {
   type: String,
@@ -177,9 +169,6 @@ bezierEasingValue: {
 /**
  * Decides if the URL should be modified with the section id when clicking a scrollactive
  * item.
- *
- * @default true
- * @type {Boolean}
  */
 modifyUrl: {
   type: Boolean,
@@ -192,9 +181,6 @@ modifyUrl: {
  * section. If false (default) it will always highlight the last item which was matched
  * in a section, even if it is already outside that section (and not inside another that's
  * being tracked).
- *
- * @default false
- * @type {Boolean}
  */
 exact: {
   type: Boolean,
@@ -211,10 +197,7 @@ highlightFirstItem: {
 },
 
 /**
- * Change the scroll active component html tag.
- *
- * @default nav
- * @type {String}
+ * Changes the scrollactive container component html tag.
  */
 tag: {
   type: String,
@@ -222,11 +205,7 @@ tag: {
 },
 
 /**
- * If true the screen will be scrolled to the element present in the URL when the component
- * is mounted.
- *
- * @default true
- * @type {Boolean}
+ * If true the screen will scroll down to the element in the URL when the component is mounted.
  */
 scrollOnStart: {
   type: Boolean,

@@ -5,9 +5,9 @@
   "description": "Lightweight and simple to use vue component that highlights menu items as you scroll the page, also scrolling to target section when clicked.",
   "main": "dist/vue-scrollactive.min.js",
   "scripts": {
-    "dev": "webpack --progress --hide-modules --mode=development",
-    "watch": "webpack --progress --hide-modules --watch --mode=development",
-    "prod": "webpack --progress --hide-modules --mode=production"
+    "start": "webpack-dev-server",
+    "sandbox": "webpack",
+    "prod": "TARGET=production webpack"
   },
   "repository": {
     "type": "git",
@@ -37,18 +37,30 @@
     "bezier-easing": "^2.0.3"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-rc.1",
-    "@babel/preset-env": "^7.0.0-rc.1",
-    "babel-eslint": "^8.2.6",
-    "babel-loader": "^8.0.0-beta.4",
-    "eslint": "^5.4.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-loader": "^2.1.0",
-    "eslint-plugin-html": "^4.0.5",
-    "eslint-plugin-import": "^2.14.0",
-    "vue-loader": "^15.3.0",
-    "vue-template-compiler": "^2.5.17",
-    "webpack": "4.16.5",
-    "webpack-cli": "^3.1.0"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/plugin-transform-runtime": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.5.3",
+    "eslint": "^7.0.0",
+    "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
+    "node-sass": "^4.14.1",
+    "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
+    "sass-loader": "^8.0.2",
+    "style-loader": "^1.2.1",
+    "vue-loader": "^15.9.2",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }

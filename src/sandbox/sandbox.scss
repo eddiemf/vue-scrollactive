@@ -1,0 +1,55 @@
+.nav.is-fixed {
+  position: fixed;
+  left: 0;
+  right: 0;
+
+  .is-active {
+    color: #00d1b2;
+  }
+}
+
+.section {
+  padding-top: 100px;
+}
+
+.buttons {
+  position: fixed;
+  z-index: 10;
+  top: 100px;
+  right: 100px;
+  padding: 15px 30px;
+  border-radius: 10px;
+  background-color: #7a7a7a;
+  background-color: #fff;
+
+  label {
+    display: block;
+  }
+
+  input,
+  button {
+    display: block;
+    width: 100%;
+    height: 42px;
+    padding: 10px 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    border: 0;
+    border: 2px solid #00d1b2;
+    border-radius: 10px;
+    font-weight: 600;
+    outline: 0;
+    transition: all 0.1s;
+  }
+
+  button {
+    background-color: #00d1b2;
+    cursor: pointer;
+    color: #fff;
+
+    &:hover {
+      background-color: #fff;
+      color: #00d1b2;
+    }
+  }
+}
