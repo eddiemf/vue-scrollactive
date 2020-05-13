@@ -11,7 +11,7 @@ Make sure to check the [demo](https://eddiemf.github.io/vue-scrollactive/example
 
 ## Installation
 
-Install the dependency using `yarn`
+Install using `yarn`
 
 ```bash
 yarn add vue-scrollactive
@@ -212,3 +212,7 @@ scrollOnStart: {
   default: true,
 },
 ```
+
+## Contributing
+
+Clone the repository and install the dependencies running `yarn`. After the dependencies are installed you should be good to run `yarn start` which will load up a server with the sandbox for you to play around.
