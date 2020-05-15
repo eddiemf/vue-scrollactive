@@ -1,7 +1,14 @@
 <script>
 import bezierEasing from 'bezier-easing';
 import { ScrollContainer } from './ScrollContainer';
-import { forEach, map, find, getIdFromHash, pushHashToUrl } from './utils';
+import {
+  forEach,
+  find,
+  getIdFromHash,
+  pushHashToUrl,
+  getSectionSelector,
+  getSectionIdFromElement,
+} from './utils';
 
 export default {
   props: {
@@ -200,7 +207,7 @@ export default {
       const items = [];
 
       forEach(elements, (menuElement) => {
-        const section = document.getElementById(getIdFromHash(menuElement.hash));
+        const section = document.querySelector(getSectionSelector(menuElement));
         if (!section) return;
 
         items.push({ section, menuElement });
@@ -265,12 +272,12 @@ export default {
       event.preventDefault();
 
       const menuItem = event.target;
-      const { hash } = menuItem;
-      const section = document.getElementById(getIdFromHash(hash));
+      const sectionSelector = getSectionSelector(menuItem);
+      const section = document.querySelector(sectionSelector);
 
       if (!section) {
         console.warn(
-          `[vue-scrollactive] Element '${hash}' was not found. Make sure it is set in the DOM.`
+          `[vue-scrollactive] Element '${sectionSelector}' was not found. Make sure it is set in the DOM.`
         );
 
         return;
@@ -302,7 +309,7 @@ export default {
       }
 
       if (this.modifyUrl) {
-        pushHashToUrl(hash);
+        pushHashToUrl(getSectionIdFromElement(menuItem));
       }
     },
 

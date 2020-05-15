@@ -41,7 +41,7 @@ If you're not running any transpiler like babel, you'll most likely need to inst
 
 ## Usage
 
-You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and add a `.scrollactive-item` class in your `<a>` tags as I show in the example below:
+The primary way to use the plugin is to wrap your menu in a `<scrollactive>` tag (which will be your nav) and add a `.scrollactive-item` class in your `<a>` tags as I show in the example below:
 
 ```html
 <scrollactive class="my-nav">
@@ -53,6 +53,19 @@ You should wrap your menu in a `<scrollactive>` tag (which will be your nav) and
 ```
 
 You can follow whatever structure you wish, just make sure to set the `.scrollactive-item` class in the items you want to highlight and set its `href` with a valid element ID that you would like to track while scrolling.
+
+The secondary way to use it is almost the same as the primary but instead of relying on `href` to find your sections you'll need to set a data attribute `data-section-selector` on your elements with the section selector you wish to have.
+
+```html
+<scrollactive class="my-nav">
+  <span data-section-selector="#home" class="scrollactive-item">Home</span>
+  <span data-section-selector=".about-us" class="scrollactive-item">About Us</span>
+  <span data-section-selector=".portfolio div span" class="scrollactive-item">Portfolio</span>
+  <span data-section-selector="#contact" class="scrollactive-item">Contact</span>
+</scrollactive>
+```
+
+As you can see this gives you more freedom to choose different tags and you can use whatever CSS selector you find necessary, but it's important to notice that `data-section-selector` takes precedence over `href`, so if you have a tag `<a href="#section-1" data-section-selector="#another-section">` it will completely ignore the `#section-1` and use `#another-section` instead.
 
 ## Events
 
