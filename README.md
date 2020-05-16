@@ -7,7 +7,7 @@ This component makes it simple to highlight a menu item with an 'active' class a
 - Configurable easing scroll effect
 - Emits events for full control
 
-Make sure to check the [demo](https://eddiemf.github.io/vue-scrollactive/examples/example-1.html) where you can play around with every option.
+Make sure to check the [demo](https://eddiemf.github.io/vue-scrollactive/dist) where you can play around with every option.
 
 ## Installation
 
