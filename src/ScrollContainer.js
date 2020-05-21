@@ -3,7 +3,7 @@ export class ScrollContainer {
     let container = window;
 
     if (containerSelector) {
-      container = document.querySelector(this.scrollContainerSelector) || window;
+      container = document.querySelector(containerSelector) || window;
     }
 
     this.container = container;
