@@ -60,7 +60,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "TARGET=production webpack && pretty-quick && git add dist/vue-scrollactive.min.js"
+      "pre-commit": "TARGET=production webpack && pretty-quick --staged && git add dist/vue-scrollactive.min.js"
     }
   }
 }
