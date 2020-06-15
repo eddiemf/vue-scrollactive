@@ -392,7 +392,8 @@ export default {
       window.location.hash = ''; // Clears the hash to prevent scroll from jumping
 
       setTimeout(() => {
-        const yPos = hashElement.offsetTop - this.offset;
+        const offset = this.scrollOffset || this.offset;
+        const yPos = this.getOffsetTop(hashElement) - offset;
 
         this.scrollContainer.scrollTo(0, yPos);
         // Sets the hash back with pushState so it won't jump to the element ignoring the offset
