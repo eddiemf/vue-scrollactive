@@ -591,8 +591,9 @@
               n &&
                 ((window.location.hash = ''),
                 setTimeout(function () {
-                  var o = n.offsetTop - e.offset;
-                  e.scrollContainer.scrollTo(0, o), e.pushHashToUrl(t);
+                  var o = e.scrollOffset || e.offset,
+                      r = n.offsetTop - o;
+                  e.scrollContainer.scrollTo(0, r), e.pushHashToUrl(t);
                 }, 0));
             }
           },
