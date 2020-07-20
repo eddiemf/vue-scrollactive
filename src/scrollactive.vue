@@ -392,11 +392,27 @@ export default {
       window.location.hash = ''; // Clears the hash to prevent scroll from jumping
 
       setTimeout(() => {
-        const yPos = hashElement.offsetTop - this.offset;
+        const offset = this.scrollOffset || this.offset;
+        const yPos = hashElement.offsetTop - offset;
 
         this.scrollContainer.scrollTo(0, yPos);
         // Sets the hash back with pushState so it won't jump to the element ignoring the offset
         pushHashToUrl(hash);
+
+        forEach(this.items, ({ menuElement, section }, index) => {
+          if (section == getIdFromHash(hash)) {
+            this.removeActiveClass();
+            this.currentItem = menuElement;
+            this.currentItem.classList.add(this.activeClass);
+
+            if (this.currentItem !== this.lastActiveItem) {
+              this.$emit('itemchanged', null, this.currentItem, this.lastActiveItem);
+              this.lastActiveItem = this.currentItem;
+            }
+
+            this.removeActiveClass();
+          }
+        });
       }, 0);
     },
   },
