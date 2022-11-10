@@ -385,19 +385,22 @@ export default {
     scrollToHashElement() {
       const { hash } = window.location;
       if (!hash) return;
+      try {
+        const hashElement = document.getElementById(getIdFromHash(hash));
+        if (!hashElement) return;
 
-      const hashElement = document.getElementById(getIdFromHash(hash));
-      if (!hashElement) return;
+        window.location.hash = ''; // Clears the hash to prevent scroll from jumping
 
-      window.location.hash = ''; // Clears the hash to prevent scroll from jumping
+        setTimeout(() => {
+          const yPos = hashElement.offsetTop - this.offset;
 
-      setTimeout(() => {
-        const yPos = hashElement.offsetTop - this.offset;
-
-        this.scrollContainer.scrollTo(0, yPos);
-        // Sets the hash back with pushState so it won't jump to the element ignoring the offset
-        pushHashToUrl(hash);
-      }, 0);
+          this.scrollContainer.scrollTo(0, yPos);
+          // Sets the hash back with pushState so it won't jump to the element ignoring the offset
+          pushHashToUrl(hash);
+        }, 0);
+      } catch (e) {
+        console.error(e)
+      }
     },
   },
 };
